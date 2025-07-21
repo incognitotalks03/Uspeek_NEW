@@ -6,6 +6,9 @@ import { TrendChart } from '@/components/dashboard/trend-chart';
 import { ScoreCards } from '@/components/dashboard/score-cards';
 import { TrendCharts } from '@/components/dashboard/trend-charts';
 import { StrengthsAndDevelopment } from '@/components/dashboard/strengths-development';
+import { TopLowPerformingVideos } from '@/components/dashboard/top-low-performing-videos';
+import { PendingAssignments } from '@/components/dashboard/pending-assignments';
+import { VideoScoresChart } from '@/components/dashboard/video-scores-chart';
 
 export default function DashboardPage() {
   return (
@@ -31,6 +34,15 @@ export default function DashboardPage() {
 
         {/* Score Cards */}
         <ScoreCards />
+
+        {/* Top and Low Performing Videos */}
+        <TopLowPerformingVideos />
+
+        {/* Video Scores Chart */}
+        <VideoScoresChart />
+
+        {/* Pending Assignments */}
+        <PendingAssignments />
 
         {/* Individual Trend Charts */}
         <TrendCharts />
