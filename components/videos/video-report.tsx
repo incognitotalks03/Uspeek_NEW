@@ -3,9 +3,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
-import { Download, User, Calendar, Clock, TrendingUp, TrendingDown, Eye, Mic, Volume2 } from 'lucide-react';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from 'recharts';
+import { Download, User, Calendar, Clock, TrendingUp, TrendingDown, Eye, Mic, Volume2, Star, Award, Target, Zap } from 'lucide-react';
 
 interface VideoReportProps {
   video: {
@@ -24,12 +23,12 @@ interface VideoReportProps {
 
 // Mock data for charts
 const modulationData = [
-  { time: '0:00', value: 65 },
-  { time: '2:00', value: 72 },
-  { time: '4:00', value: 68 },
-  { time: '6:00', value: 75 },
-  { time: '8:00', value: 70 },
-  { time: '10:00', value: 78 },
+  { time: '0:00', value: 65, label: 'Start' },
+  { time: '2:00', value: 72, label: 'Building' },
+  { time: '4:00', value: 68, label: 'Dip' },
+  { time: '6:00', value: 75, label: 'Peak' },
+  { time: '8:00', value: 70, label: 'Steady' },
+  { time: '10:00', value: 78, label: 'Strong Finish' },
 ];
 
 const pitchData = [
@@ -50,6 +49,13 @@ const volumeData = [
   { time: '10:00', value: 58 },
 ];
 
+const emotionData = [
+  { name: 'Happy', value: 35, color: '#10b981' },
+  { name: 'Confident', value: 28, color: '#3b82f6' },
+  { name: 'Neutral', value: 25, color: '#6b7280' },
+  { name: 'Concerned', value: 12, color: '#f59e0b' },
+];
+
 export function VideoReport({ video, onClose }: VideoReportProps) {
   const getScoreColor = (score: number) => {
     if (score >= 80) return 'text-green-600 bg-green-100';
@@ -57,24 +63,36 @@ export function VideoReport({ video, onClose }: VideoReportProps) {
     return 'text-red-600 bg-red-100';
   };
 
+  const getScoreEmoji = (score: number) => {
+    if (score >= 80) return '🎉';
+    if (score >= 70) return '👍';
+    return '💪';
+  };
+
   const handleDownloadReport = () => {
     console.log('Downloading report for video:', video.id);
   };
 
-  // Circular progress component
-  const CircularProgress = ({ score, size = 120, strokeWidth = 8, color = '#3b82f6' }: any) => {
+  // Enhanced Circular Progress component
+  const CircularProgress = ({ score, size = 140, strokeWidth = 12, color = '#3b82f6', emoji = '📊' }: any) => {
     const radius = (size - strokeWidth) / 2;
     const circumference = radius * 2 * Math.PI;
     const offset = circumference - (score / 100) * circumference;
 
     return (
-      <div className="relative" style={{ width: size, height: size }}>
-        <svg width={size} height={size} className="transform -rotate-90">
+      <div className="relative flex flex-col items-center" style={{ width: size, height: size + 40 }}>
+        <svg width={size} height={size} className="transform -rotate-90 drop-shadow-lg">
+          <defs>
+            <linearGradient id={`gradient-${color}`} x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor={color} stopOpacity="0.8" />
+              <stop offset="100%" stopColor={color} stopOpacity="1" />
+            </linearGradient>
+          </defs>
           <circle
             cx={size / 2}
             cy={size / 2}
             r={radius}
-            stroke="#e5e7eb"
+            stroke="#f1f5f9"
             strokeWidth={strokeWidth}
             fill="none"
           />
@@ -82,18 +100,20 @@ export function VideoReport({ video, onClose }: VideoReportProps) {
             cx={size / 2}
             cy={size / 2}
             r={radius}
-            stroke={color}
+            stroke={`url(#gradient-${color})`}
             strokeWidth={strokeWidth}
             fill="none"
             strokeDasharray={circumference}
             strokeDashoffset={offset}
             strokeLinecap="round"
+            className="transition-all duration-1000 ease-out"
           />
         </svg>
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center">
-            <div className="text-2xl font-bold">{score}</div>
-            <div className="text-xs text-gray-500">/5</div>
+            <div className="text-3xl mb-1">{emoji}</div>
+            <div className="text-2xl font-bold text-gray-800">{score}</div>
+            <div className="text-xs text-gray-500 font-medium">/100</div>
           </div>
         </div>
       </div>
@@ -101,158 +121,196 @@ export function VideoReport({ video, onClose }: VideoReportProps) {
   };
 
   return (
-    <div className="space-y-6 max-h-[90vh] overflow-y-auto">
-      {/* Header Section */}
-      <div className="bg-gradient-to-r from-blue-600 to-blue-800 text-white p-6 rounded-lg">
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <h1 className="text-2xl font-bold">YOUR USPEEK REPORT</h1>
-            <div className="flex items-center space-x-4 mt-2 text-sm">
-              <div className="flex items-center space-x-1">
-                <User className="w-4 h-4" />
-                <span>{video.speaker}</span>
-              </div>
-              <div className="flex items-center space-x-1">
-                <Calendar className="w-4 h-4" />
-                <span>{new Date(video.uploadDate).toLocaleDateString()}</span>
-              </div>
-              <div className="flex items-center space-x-1">
-                <Clock className="w-4 h-4" />
-                <span>{video.duration}</span>
+    <div className="space-y-8 max-h-[90vh] overflow-y-auto bg-gradient-to-br from-slate-50 to-blue-50 p-6 rounded-xl">
+      {/* Hero Header Section */}
+      <div className="relative bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white p-8 rounded-2xl shadow-2xl overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-32 translate-x-32"></div>
+        <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-24 -translate-x-24"></div>
+        
+        <div className="relative z-10 flex items-center justify-between">
+          <div className="flex items-center space-x-6">
+            <div className="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-sm">
+              <span className="text-3xl">🎯</span>
+            </div>
+            <div>
+              <h1 className="text-3xl font-bold mb-2">🚀 YOUR USPEEK REPORT</h1>
+              <div className="flex items-center space-x-6 text-sm opacity-90">
+                <div className="flex items-center space-x-2">
+                  <User className="w-4 h-4" />
+                  <span className="font-medium">{video.speaker}</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Calendar className="w-4 h-4" />
+                  <span>{new Date(video.uploadDate).toLocaleDateString()}</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Clock className="w-4 h-4" />
+                  <span>{video.duration}</span>
+                </div>
               </div>
             </div>
           </div>
-          <div className="text-right">
-            <div className="text-4xl font-bold">2.9/5</div>
-            <div className="text-sm">NICE SHOW!</div>
+          
+          <div className="text-center">
+            <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-6 mb-4">
+              <div className="text-5xl font-bold mb-2">2.9<span className="text-2xl">/5</span></div>
+              <div className="text-lg font-semibold">🎊 NICE SHOW!</div>
+            </div>
             <Button 
               onClick={handleDownloadReport} 
-              className="mt-2 bg-orange-500 hover:bg-orange-600"
+              className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
             >
-              <Download className="w-4 h-4 mr-2" />
-              Download Report
+              <Download className="w-5 h-5 mr-2" />
+              📄 Download Report
             </Button>
           </div>
         </div>
       </div>
 
-      {/* Score Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card>
-          <CardHeader className="text-center">
-            <CardTitle className="text-blue-600">Body Language Score</CardTitle>
+      {/* Score Overview Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+          <CardHeader className="text-center pb-2">
+            <CardTitle className="text-blue-700 font-bold text-lg">🤝 Body Language</CardTitle>
           </CardHeader>
-          <CardContent className="flex justify-center">
-            <CircularProgress score={video.bodyLanguageScore} color="#3b82f6" />
+          <CardContent className="flex justify-center pb-6">
+            <CircularProgress score={video.bodyLanguageScore} color="#3b82f6" emoji="🤝" />
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="text-center">
-            <CardTitle className="text-purple-600">Vocal Tone Score</CardTitle>
+        <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+          <CardHeader className="text-center pb-2">
+            <CardTitle className="text-purple-700 font-bold text-lg">🎤 Vocal Tone</CardTitle>
           </CardHeader>
-          <CardContent className="flex justify-center">
-            <CircularProgress score={video.vocalToneScore} color="#8b5cf6" />
+          <CardContent className="flex justify-center pb-6">
+            <CircularProgress score={video.vocalToneScore} color="#8b5cf6" emoji="🎤" />
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="text-center">
-            <CardTitle className="text-pink-600">Word Power Score</CardTitle>
+        <Card className="bg-gradient-to-br from-pink-50 to-pink-100 border-pink-200 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+          <CardHeader className="text-center pb-2">
+            <CardTitle className="text-pink-700 font-bold text-lg">💬 Word Power</CardTitle>
           </CardHeader>
-          <CardContent className="flex justify-center">
-            <CircularProgress score={video.wordPowerScore} color="#ec4899" />
+          <CardContent className="flex justify-center pb-6">
+            <CircularProgress score={video.wordPowerScore} color="#ec4899" emoji="💬" />
           </CardContent>
         </Card>
       </div>
 
       {/* Confidence Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="text-center">
-          <CardContent className="p-6">
-            <div className="text-4xl font-bold text-blue-600 mb-2">3.8/5</div>
-            <div className="text-sm text-gray-600">MOSTLY CONFIDENT</div>
+        <Card className="bg-gradient-to-r from-green-400 to-green-500 text-white shadow-xl">
+          <CardContent className="p-6 text-center">
+            <div className="text-4xl mb-2">😎</div>
+            <div className="text-3xl font-bold mb-1">3.8/5</div>
+            <div className="text-sm font-semibold opacity-90">MOSTLY CONFIDENT</div>
           </CardContent>
         </Card>
 
-        <Card className="text-center">
-          <CardContent className="p-6">
-            <div className="text-4xl font-bold text-blue-600 mb-2">2.4/5</div>
-            <div className="text-sm text-gray-600">LOW ENGAGEMENT</div>
+        <Card className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white shadow-xl">
+          <CardContent className="p-6 text-center">
+            <div className="text-4xl mb-2">😐</div>
+            <div className="text-3xl font-bold mb-1">2.4/5</div>
+            <div className="text-sm font-semibold opacity-90">LOW ENGAGEMENT</div>
           </CardContent>
         </Card>
 
-        <Card className="text-center">
-          <CardContent className="p-6">
-            <div className="text-4xl font-bold text-blue-600 mb-2">1.2/5</div>
-            <div className="text-sm text-gray-600">NOT SERIOUS</div>
+        <Card className="bg-gradient-to-r from-red-400 to-red-500 text-white shadow-xl">
+          <CardContent className="p-6 text-center">
+            <div className="text-4xl mb-2">🤔</div>
+            <div className="text-3xl font-bold mb-1">1.2/5</div>
+            <div className="text-sm font-semibold opacity-90">NOT SERIOUS</div>
           </CardContent>
         </Card>
       </div>
 
       {/* Performance Message */}
-      <Card>
-        <CardContent className="p-6 text-center">
-          <p className="text-gray-700">
+      <Card className="bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-xl">
+        <CardContent className="p-8 text-center">
+          <div className="text-5xl mb-4">💪</div>
+          <p className="text-lg font-medium">
             Your performance is below average. You need to make a good number of changes to move the needle.
           </p>
+          <div className="mt-4 text-sm opacity-90">
+            🎯 Focus on the improvement areas highlighted below to boost your scores!
+          </div>
         </CardContent>
       </Card>
 
       {/* Body Language Section */}
-      <Card>
-        <CardHeader className="bg-blue-600 text-white">
-          <CardTitle className="flex items-center space-x-2">
-            <span>BODY LANGUAGE SCORE</span>
-            <span className="ml-auto text-2xl font-bold">0.9/5</span>
+      <Card className="shadow-2xl border-0 overflow-hidden">
+        <CardHeader className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6">
+          <CardTitle className="flex items-center justify-between text-2xl">
+            <div className="flex items-center space-x-3">
+              <span className="text-3xl">🤝</span>
+              <span>BODY LANGUAGE SCORE</span>
+            </div>
+            <div className="bg-white/20 px-4 py-2 rounded-xl">
+              <span className="text-2xl font-bold">0.9/5</span>
+            </div>
           </CardTitle>
         </CardHeader>
-        <CardContent className="p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            {/* Positive Facial Expression */}
-            <div>
-              <h4 className="font-semibold mb-2 text-green-600">POSITIVE FACIAL EXPRESSION</h4>
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <span>Surprise</span>
-                  <span className="font-semibold">0%</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Happy</span>
-                  <span className="font-semibold">0%</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Calm</span>
-                  <span className="font-semibold">0%</span>
+        <CardContent className="p-8 bg-gradient-to-br from-blue-50 to-white">
+          {/* Emotion Analysis */}
+          <div className="mb-8">
+            <h4 className="text-xl font-bold mb-4 flex items-center">
+              <span className="text-2xl mr-2">😊</span>
+              Emotional Expression Analysis
+            </h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-white p-6 rounded-xl shadow-lg">
+                <h5 className="font-semibold mb-4 text-green-600 flex items-center">
+                  <span className="text-xl mr-2">✨</span>
+                  POSITIVE EXPRESSIONS
+                </h5>
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="flex items-center"><span className="mr-2">😮</span>Surprise</span>
+                    <Badge className="bg-green-100 text-green-800">0%</Badge>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="flex items-center"><span className="mr-2">😊</span>Happy</span>
+                    <Badge className="bg-green-100 text-green-800">0%</Badge>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="flex items-center"><span className="mr-2">😌</span>Calm</span>
+                    <Badge className="bg-green-100 text-green-800">0%</Badge>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Negative Facial Expression */}
-            <div>
-              <h4 className="font-semibold mb-2 text-red-600">NEGATIVE FACIAL EXPRESSION</h4>
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <span>Anger</span>
-                  <span className="font-semibold">0%</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Fear</span>
-                  <span className="font-semibold">0%</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Disgust</span>
-                  <span className="font-semibold">0%</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Sad</span>
-                  <span className="font-semibold">0%</span>
+              <div className="bg-white p-6 rounded-xl shadow-lg">
+                <h5 className="font-semibold mb-4 text-red-600 flex items-center">
+                  <span className="text-xl mr-2">⚠️</span>
+                  NEGATIVE EXPRESSIONS
+                </h5>
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="flex items-center"><span className="mr-2">😠</span>Anger</span>
+                    <Badge className="bg-red-100 text-red-800">0%</Badge>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="flex items-center"><span className="mr-2">😨</span>Fear</span>
+                    <Badge className="bg-red-100 text-red-800">0%</Badge>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="flex items-center"><span className="mr-2">🤢</span>Disgust</span>
+                    <Badge className="bg-red-100 text-red-800">0%</Badge>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="flex items-center"><span className="mr-2">😢</span>Sad</span>
+                    <Badge className="bg-red-100 text-red-800">0%</Badge>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="bg-blue-50 p-4 rounded-lg mb-6">
+          <div className="bg-gradient-to-r from-blue-100 to-blue-200 p-6 rounded-xl mb-8 border-l-4 border-blue-500">
+            <div className="flex items-center mb-2">
+              <span className="text-2xl mr-2">💡</span>
+              <span className="font-semibold text-blue-800">Insight</span>
+            </div>
             <p className="text-blue-800">
               There are a number of areas in your body language that are having a negative impact. Review your report & 
               start practicing to achieve the best result.
@@ -260,80 +318,110 @@ export function VideoReport({ video, onClose }: VideoReportProps) {
           </div>
 
           {/* Detailed Metrics */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <h4 className="font-semibold mb-4">FREQUENCY</h4>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <Eye className="w-4 h-4" />
-                    <span>Gaze</span>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="bg-white p-6 rounded-xl shadow-lg">
+              <h4 className="font-bold mb-6 text-lg flex items-center">
+                <span className="text-2xl mr-2">📊</span>
+                FREQUENCY ANALYSIS
+              </h4>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div className="flex items-center space-x-3">
+                    <Eye className="w-5 h-5 text-blue-600" />
+                    <span className="font-medium">Gaze</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <span className="font-semibold">100%</span>
-                    <span className="text-red-500">Bad</span>
-                  </div>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <span>👤</span>
-                    <span>Head Position</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <span className="font-semibold">74%</span>
-                    <span className="text-red-500">Bad</span>
+                    <span className="font-bold">100%</span>
+                    <Badge className="bg-red-100 text-red-800">Needs Work</Badge>
                   </div>
                 </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <span>🤲</span>
-                    <span>Hand Movement</span>
+                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div className="flex items-center space-x-3">
+                    <span className="text-xl">👤</span>
+                    <span className="font-medium">Head Position</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <span className="font-semibold">13%</span>
-                    <span className="text-red-500">Bad</span>
+                    <span className="font-bold">74%</span>
+                    <Badge className="bg-red-100 text-red-800">Needs Work</Badge>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div className="flex items-center space-x-3">
+                    <span className="text-xl">🤲</span>
+                    <span className="font-medium">Hand Movement</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <span className="font-bold">13%</span>
+                    <Badge className="bg-red-100 text-red-800">Needs Work</Badge>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div>
-              <h4 className="font-semibold mb-4">BODY POSTURE</h4>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span>Straight Posture</span>
+            <div className="bg-white p-6 rounded-xl shadow-lg">
+              <h4 className="font-bold mb-6 text-lg flex items-center">
+                <span className="text-2xl mr-2">🏃</span>
+                BODY POSTURE
+              </h4>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <span className="font-medium">Straight Posture</span>
                   <div className="flex items-center space-x-2">
-                    <span className="font-semibold">0%</span>
-                    <span className="text-red-500">Bad</span>
+                    <span className="font-bold">0%</span>
+                    <Badge className="bg-red-100 text-red-800">Poor</Badge>
                   </div>
                 </div>
-                <div className="flex items-center justify-between">
-                  <span>Shoulder Position</span>
+                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <span className="font-medium">Shoulder Position</span>
                   <div className="flex items-center space-x-2">
-                    <span className="font-semibold">0%</span>
-                    <span className="text-red-500">Bad</span>
+                    <span className="font-bold">0%</span>
+                    <Badge className="bg-red-100 text-red-800">Poor</Badge>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Top Areas */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-            <div>
-              <h4 className="font-semibold mb-2 text-green-600">YOUR TOP AREAS</h4>
-              <ul className="text-sm space-y-1">
-                <li>• Your posture looks good</li>
-                <li>• Your hand movements are good</li>
-                <li>• Your head movements look fine</li>
+          {/* Improvement Areas */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+            <div className="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-xl border border-green-200">
+              <h4 className="font-bold mb-4 text-green-700 flex items-center">
+                <span className="text-2xl mr-2">🌟</span>
+                YOUR TOP AREAS
+              </h4>
+              <ul className="space-y-2">
+                <li className="flex items-center text-green-700">
+                  <span className="mr-2">✅</span>
+                  Your posture looks good
+                </li>
+                <li className="flex items-center text-green-700">
+                  <span className="mr-2">✅</span>
+                  Your hand movements are good
+                </li>
+                <li className="flex items-center text-green-700">
+                  <span className="mr-2">✅</span>
+                  Your head movements look fine
+                </li>
               </ul>
             </div>
-            <div>
-              <h4 className="font-semibold mb-2 text-red-600">YOUR AREAS FOR IMPROVEMENT</h4>
-              <ul className="text-sm space-y-1">
-                <li>• You need to look at the camera more often</li>
-                <li>• You need to be more expressive</li>
-                <li>• Avoid looking down or sideways</li>
+            <div className="bg-gradient-to-br from-red-50 to-red-100 p-6 rounded-xl border border-red-200">
+              <h4 className="font-bold mb-4 text-red-700 flex items-center">
+                <span className="text-2xl mr-2">🎯</span>
+                AREAS FOR IMPROVEMENT
+              </h4>
+              <ul className="space-y-2">
+                <li className="flex items-center text-red-700">
+                  <span className="mr-2">🔴</span>
+                  You need to look at the camera more often
+                </li>
+                <li className="flex items-center text-red-700">
+                  <span className="mr-2">🔴</span>
+                  You need to be more expressive
+                </li>
+                <li className="flex items-center text-red-700">
+                  <span className="mr-2">🔴</span>
+                  Avoid looking down or sideways
+                </li>
               </ul>
             </div>
           </div>
@@ -341,89 +429,153 @@ export function VideoReport({ video, onClose }: VideoReportProps) {
       </Card>
 
       {/* Vocal Tone Section */}
-      <Card>
-        <CardHeader className="bg-purple-600 text-white">
-          <CardTitle className="flex items-center justify-between">
-            <span>VOCAL TONE SCORE</span>
-            <span className="text-2xl font-bold">4.3/5</span>
+      <Card className="shadow-2xl border-0 overflow-hidden">
+        <CardHeader className="bg-gradient-to-r from-purple-600 to-purple-700 text-white p-6">
+          <CardTitle className="flex items-center justify-between text-2xl">
+            <div className="flex items-center space-x-3">
+              <span className="text-3xl">🎤</span>
+              <span>VOCAL TONE SCORE</span>
+            </div>
+            <div className="bg-white/20 px-4 py-2 rounded-xl">
+              <span className="text-2xl font-bold">4.3/5</span>
+            </div>
           </CardTitle>
         </CardHeader>
-        <CardContent className="p-6">
-          <div className="bg-green-50 p-4 rounded-lg mb-6 flex items-center space-x-2">
-            <div className="w-4 h-4 bg-green-500 rounded-full"></div>
-            <span className="text-green-800 font-medium">Best Part of Speech - Great</span>
-            <span className="text-green-600">Live Pitch</span>
+        <CardContent className="p-8 bg-gradient-to-br from-purple-50 to-white">
+          <div className="bg-gradient-to-r from-green-100 to-green-200 p-6 rounded-xl mb-8 border-l-4 border-green-500">
+            <div className="flex items-center mb-2">
+              <span className="text-2xl mr-2">🏆</span>
+              <span className="font-bold text-green-800">Best Part of Speech - Great Live Pitch</span>
+            </div>
           </div>
 
-          <div className="bg-purple-50 p-4 rounded-lg mb-6">
+          <div className="bg-gradient-to-r from-purple-100 to-purple-200 p-6 rounded-xl mb-8 border-l-4 border-purple-500">
+            <div className="flex items-center mb-2">
+              <span className="text-2xl mr-2">💪</span>
+              <span className="font-semibold text-purple-800">Insight</span>
+            </div>
             <p className="text-purple-800">
               Your voice is strong and you are close to having an impact. Work on your live improvement areas.
             </p>
           </div>
 
-          {/* Modulation Graph */}
-          <div className="mb-6">
-            <h4 className="font-semibold mb-4">MODULATION GRAPH</h4>
-            <div className="h-48">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={modulationData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="time" />
-                  <YAxis />
-                  <Tooltip />
-                  <Line type="monotone" dataKey="value" stroke="#8b5cf6" strokeWidth={2} />
-                </LineChart>
-              </ResponsiveContainer>
+          {/* Charts Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+            {/* Modulation Graph */}
+            <div className="bg-white p-6 rounded-xl shadow-lg">
+              <h4 className="font-bold mb-4 flex items-center">
+                <span className="text-xl mr-2">📈</span>
+                MODULATION
+              </h4>
+              <div className="h-48">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={modulationData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                    <XAxis dataKey="time" tick={{ fontSize: 10 }} />
+                    <YAxis tick={{ fontSize: 10 }} />
+                    <Tooltip 
+                      contentStyle={{
+                        backgroundColor: '#8b5cf6',
+                        border: 'none',
+                        borderRadius: '8px',
+                        color: 'white'
+                      }}
+                    />
+                    <Line type="monotone" dataKey="value" stroke="#8b5cf6" strokeWidth={3} dot={{ fill: '#8b5cf6', r: 4 }} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            {/* Pitch Graph */}
+            <div className="bg-white p-6 rounded-xl shadow-lg">
+              <h4 className="font-bold mb-4 flex items-center">
+                <span className="text-xl mr-2">🎵</span>
+                PITCH
+              </h4>
+              <div className="h-48">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={pitchData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                    <XAxis dataKey="time" tick={{ fontSize: 10 }} />
+                    <YAxis tick={{ fontSize: 10 }} />
+                    <Tooltip 
+                      contentStyle={{
+                        backgroundColor: '#ef4444',
+                        border: 'none',
+                        borderRadius: '8px',
+                        color: 'white'
+                      }}
+                    />
+                    <Line type="monotone" dataKey="value" stroke="#ef4444" strokeWidth={3} dot={{ fill: '#ef4444', r: 4 }} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            {/* Volume Graph */}
+            <div className="bg-white p-6 rounded-xl shadow-lg">
+              <h4 className="font-bold mb-4 flex items-center">
+                <span className="text-xl mr-2">🔊</span>
+                VOLUME
+              </h4>
+              <div className="h-48">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={volumeData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                    <XAxis dataKey="time" tick={{ fontSize: 10 }} />
+                    <YAxis tick={{ fontSize: 10 }} />
+                    <Tooltip 
+                      contentStyle={{
+                        backgroundColor: '#f59e0b',
+                        border: 'none',
+                        borderRadius: '8px',
+                        color: 'white'
+                      }}
+                    />
+                    <Line type="monotone" dataKey="value" stroke="#f59e0b" strokeWidth={3} dot={{ fill: '#f59e0b', r: 4 }} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
             </div>
           </div>
 
-          {/* Pitch Graph */}
-          <div className="mb-6">
-            <h4 className="font-semibold mb-4">PITCH GRAPH</h4>
-            <div className="h-48">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={pitchData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="time" />
-                  <YAxis />
-                  <Tooltip />
-                  <Line type="monotone" dataKey="value" stroke="#ef4444" strokeWidth={2} />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-
-          {/* Volume Graph */}
-          <div className="mb-6">
-            <h4 className="font-semibold mb-4">VOLUME GRAPH</h4>
-            <div className="h-48">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={volumeData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="time" />
-                  <YAxis />
-                  <Tooltip />
-                  <Line type="monotone" dataKey="value" stroke="#ef4444" strokeWidth={2} />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-
-          {/* Top Areas */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <h4 className="font-semibold mb-2 text-green-600">YOUR TOP AREAS</h4>
-              <ul className="text-sm space-y-1">
-                <li>• Your pitch is good</li>
-                <li>• Your volume is good</li>
-                <li>• Your pace is good</li>
+          {/* Improvement Areas */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-xl border border-green-200">
+              <h4 className="font-bold mb-4 text-green-700 flex items-center">
+                <span className="text-2xl mr-2">🌟</span>
+                YOUR TOP AREAS
+              </h4>
+              <ul className="space-y-2">
+                <li className="flex items-center text-green-700">
+                  <span className="mr-2">✅</span>
+                  Your pitch is good
+                </li>
+                <li className="flex items-center text-green-700">
+                  <span className="mr-2">✅</span>
+                  Your volume is good
+                </li>
+                <li className="flex items-center text-green-700">
+                  <span className="mr-2">✅</span>
+                  Your pace is good
+                </li>
               </ul>
             </div>
-            <div>
-              <h4 className="font-semibold mb-2 text-red-600">YOUR AREAS FOR IMPROVEMENT</h4>
-              <ul className="text-sm space-y-1">
-                <li>• You need to work on your modulation</li>
-                <li>• Try to vary your pitch more</li>
+            <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-6 rounded-xl border border-orange-200">
+              <h4 className="font-bold mb-4 text-orange-700 flex items-center">
+                <span className="text-2xl mr-2">🎯</span>
+                AREAS FOR IMPROVEMENT
+              </h4>
+              <ul className="space-y-2">
+                <li className="flex items-center text-orange-700">
+                  <span className="mr-2">🔶</span>
+                  You need to work on your modulation
+                </li>
+                <li className="flex items-center text-orange-700">
+                  <span className="mr-2">🔶</span>
+                  Try to vary your pitch more
+                </li>
               </ul>
             </div>
           </div>
@@ -431,126 +583,189 @@ export function VideoReport({ video, onClose }: VideoReportProps) {
       </Card>
 
       {/* Word Power Section */}
-      <Card>
-        <CardHeader className="bg-pink-600 text-white">
-          <CardTitle className="flex items-center justify-between">
-            <span>WORD POWER SCORE</span>
-            <span className="text-2xl font-bold">3.6/5</span>
+      <Card className="shadow-2xl border-0 overflow-hidden">
+        <CardHeader className="bg-gradient-to-r from-pink-600 to-pink-700 text-white p-6">
+          <CardTitle className="flex items-center justify-between text-2xl">
+            <div className="flex items-center space-x-3">
+              <span className="text-3xl">💬</span>
+              <span>WORD POWER SCORE</span>
+            </div>
+            <div className="bg-white/20 px-4 py-2 rounded-xl">
+              <span className="text-2xl font-bold">3.6/5</span>
+            </div>
           </CardTitle>
         </CardHeader>
-        <CardContent className="p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            <div className="bg-green-100 p-4 rounded-lg">
-              <div className="flex items-center space-x-2 mb-2">
-                <div className="w-4 h-4 bg-green-500 rounded-full"></div>
-                <span className="font-semibold text-green-800">Fluent</span>
+        <CardContent className="p-8 bg-gradient-to-br from-pink-50 to-white">
+          {/* Status Indicators */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div className="bg-gradient-to-r from-green-100 to-green-200 p-6 rounded-xl border border-green-300">
+              <div className="flex items-center space-x-3">
+                <span className="text-3xl">🎯</span>
+                <div>
+                  <span className="font-bold text-green-800 text-lg">Fluent</span>
+                  <p className="text-green-700 text-sm">Your speech flows naturally</p>
+                </div>
               </div>
             </div>
-            <div className="bg-yellow-100 p-4 rounded-lg">
-              <div className="flex items-center space-x-2 mb-2">
-                <div className="w-4 h-4 bg-yellow-500 rounded-full"></div>
-                <span className="font-semibold text-yellow-800">Neutral</span>
+            <div className="bg-gradient-to-r from-yellow-100 to-yellow-200 p-6 rounded-xl border border-yellow-300">
+              <div className="flex items-center space-x-3">
+                <span className="text-3xl">😐</span>
+                <div>
+                  <span className="font-bold text-yellow-800 text-lg">Neutral</span>
+                  <p className="text-yellow-700 text-sm">Room for emotional expression</p>
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="bg-pink-50 p-4 rounded-lg mb-6">
+          <div className="bg-gradient-to-r from-pink-100 to-pink-200 p-6 rounded-xl mb-8 border-l-4 border-pink-500">
+            <div className="flex items-center mb-2">
+              <span className="text-2xl mr-2">💡</span>
+              <span className="font-semibold text-pink-800">Insight</span>
+            </div>
             <p className="text-pink-800">
               Your Word Power is good. Identify the areas that can enhance your score.
             </p>
           </div>
 
-          {/* Word Analysis */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            <div>
-              <h4 className="font-semibold mb-4 text-green-600">WORDS</h4>
-              <div className="space-y-2">
-                <div className="bg-green-100 p-2 rounded">
-                  <span className="text-green-800 font-medium">Positive Language</span>
+          {/* Word Analysis Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div className="bg-white p-6 rounded-xl shadow-lg">
+              <h4 className="font-bold mb-6 text-lg flex items-center text-green-600">
+                <span className="text-2xl mr-2">✨</span>
+                POSITIVE WORDS
+              </h4>
+              <div className="space-y-3">
+                <div className="bg-green-100 p-3 rounded-lg">
+                  <span className="text-green-800 font-medium">Positive Language Detected</span>
+                </div>
+                <div className="text-sm text-green-600">
+                  Great use of encouraging and uplifting words!
                 </div>
               </div>
             </div>
-            <div>
-              <h4 className="font-semibold mb-4 text-yellow-600">THEMES</h4>
-              <div className="space-y-2">
-                <div className="bg-yellow-100 p-2 rounded">
-                  <span className="text-yellow-800 font-medium">Neutral</span>
+            <div className="bg-white p-6 rounded-xl shadow-lg">
+              <h4 className="font-bold mb-6 text-lg flex items-center text-yellow-600">
+                <span className="text-2xl mr-2">🎭</span>
+                THEMES
+              </h4>
+              <div className="space-y-3">
+                <div className="bg-yellow-100 p-3 rounded-lg">
+                  <span className="text-yellow-800 font-medium">Neutral Tone</span>
                 </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Detailed Analysis */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div>
-              <h4 className="font-semibold mb-4">FILLERS</h4>
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <span>Um</span>
-                  <span className="font-semibold text-red-500">12</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Uh</span>
-                  <span className="font-semibold text-red-500">8</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Like</span>
-                  <span className="font-semibold text-red-500">5</span>
-                </div>
-              </div>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">PET WORDS</h4>
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <span>Actually</span>
-                  <span className="font-semibold text-yellow-500">15</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Basically</span>
-                  <span className="font-semibold text-yellow-500">9</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Obviously</span>
-                  <span className="font-semibold text-yellow-500">6</span>
-                </div>
-              </div>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">POWER WORDS</h4>
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <span>Achieve</span>
-                  <span className="font-semibold text-green-500">3</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Success</span>
-                  <span className="font-semibold text-green-500">2</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Impact</span>
-                  <span className="font-semibold text-green-500">1</span>
+                <div className="text-sm text-yellow-600">
+                  Consider adding more emotional variety
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Top Areas */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-            <div>
-              <h4 className="font-semibold mb-2 text-green-600">YOUR TOP AREAS</h4>
-              <ul className="text-sm space-y-1">
-                <li>• You use positive language</li>
-                <li>• Your vocabulary is good</li>
-                <li>• You speak clearly</li>
+          {/* Detailed Word Analysis */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="bg-white p-6 rounded-xl shadow-lg border-l-4 border-red-400">
+              <h4 className="font-bold mb-4 flex items-center text-red-600">
+                <span className="text-xl mr-2">🚫</span>
+                FILLERS
+              </h4>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center p-2 bg-red-50 rounded">
+                  <span className="flex items-center"><span className="mr-2">😅</span>Um</span>
+                  <Badge className="bg-red-100 text-red-800 font-bold">12</Badge>
+                </div>
+                <div className="flex justify-between items-center p-2 bg-red-50 rounded">
+                  <span className="flex items-center"><span className="mr-2">😅</span>Uh</span>
+                  <Badge className="bg-red-100 text-red-800 font-bold">8</Badge>
+                </div>
+                <div className="flex justify-between items-center p-2 bg-red-50 rounded">
+                  <span className="flex items-center"><span className="mr-2">😅</span>Like</span>
+                  <Badge className="bg-red-100 text-red-800 font-bold">5</Badge>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-white p-6 rounded-xl shadow-lg border-l-4 border-yellow-400">
+              <h4 className="font-bold mb-4 flex items-center text-yellow-600">
+                <span className="text-xl mr-2">🔄</span>
+                PET WORDS
+              </h4>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center p-2 bg-yellow-50 rounded">
+                  <span className="flex items-center"><span className="mr-2">🤷</span>Actually</span>
+                  <Badge className="bg-yellow-100 text-yellow-800 font-bold">15</Badge>
+                </div>
+                <div className="flex justify-between items-center p-2 bg-yellow-50 rounded">
+                  <span className="flex items-center"><span className="mr-2">🤷</span>Basically</span>
+                  <Badge className="bg-yellow-100 text-yellow-800 font-bold">9</Badge>
+                </div>
+                <div className="flex justify-between items-center p-2 bg-yellow-50 rounded">
+                  <span className="flex items-center"><span className="mr-2">🤷</span>Obviously</span>
+                  <Badge className="bg-yellow-100 text-yellow-800 font-bold">6</Badge>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-white p-6 rounded-xl shadow-lg border-l-4 border-green-400">
+              <h4 className="font-bold mb-4 flex items-center text-green-600">
+                <span className="text-xl mr-2">⚡</span>
+                POWER WORDS
+              </h4>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center p-2 bg-green-50 rounded">
+                  <span className="flex items-center"><span className="mr-2">🎯</span>Achieve</span>
+                  <Badge className="bg-green-100 text-green-800 font-bold">3</Badge>
+                </div>
+                <div className="flex justify-between items-center p-2 bg-green-50 rounded">
+                  <span className="flex items-center"><span className="mr-2">🏆</span>Success</span>
+                  <Badge className="bg-green-100 text-green-800 font-bold">2</Badge>
+                </div>
+                <div className="flex justify-between items-center p-2 bg-green-50 rounded">
+                  <span className="flex items-center"><span className="mr-2">💥</span>Impact</span>
+                  <Badge className="bg-green-100 text-green-800 font-bold">1</Badge>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Improvement Areas */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-xl border border-green-200">
+              <h4 className="font-bold mb-4 text-green-700 flex items-center">
+                <span className="text-2xl mr-2">🌟</span>
+                YOUR TOP AREAS
+              </h4>
+              <ul className="space-y-2">
+                <li className="flex items-center text-green-700">
+                  <span className="mr-2">✅</span>
+                  You use positive language
+                </li>
+                <li className="flex items-center text-green-700">
+                  <span className="mr-2">✅</span>
+                  Your vocabulary is good
+                </li>
+                <li className="flex items-center text-green-700">
+                  <span className="mr-2">✅</span>
+                  You speak clearly
+                </li>
               </ul>
             </div>
-            <div>
-              <h4 className="font-semibold mb-2 text-red-600">YOUR AREAS FOR IMPROVEMENT</h4>
-              <ul className="text-sm space-y-1">
-                <li>• Reduce filler words like "um" and "uh"</li>
-                <li>• Avoid overusing pet words</li>
-                <li>• Use more power words for impact</li>
+            <div className="bg-gradient-to-br from-red-50 to-red-100 p-6 rounded-xl border border-red-200">
+              <h4 className="font-bold mb-4 text-red-700 flex items-center">
+                <span className="text-2xl mr-2">🎯</span>
+                AREAS FOR IMPROVEMENT
+              </h4>
+              <ul className="space-y-2">
+                <li className="flex items-center text-red-700">
+                  <span className="mr-2">🔴</span>
+                  Reduce filler words like "um" and "uh"
+                </li>
+                <li className="flex items-center text-red-700">
+                  <span className="mr-2">🔴</span>
+                  Avoid overusing pet words
+                </li>
+                <li className="flex items-center text-red-700">
+                  <span className="mr-2">🔴</span>
+                  Use more power words for impact
+                </li>
               </ul>
             </div>
           </div>
@@ -558,60 +773,84 @@ export function VideoReport({ video, onClose }: VideoReportProps) {
       </Card>
 
       {/* Transcript Section */}
-      <Card>
-        <CardHeader className="bg-blue-600 text-white">
-          <CardTitle>TRANSCRIPT</CardTitle>
+      <Card className="shadow-2xl border-0 overflow-hidden">
+        <CardHeader className="bg-gradient-to-r from-indigo-600 to-indigo-700 text-white p-6">
+          <CardTitle className="flex items-center space-x-3 text-2xl">
+            <span className="text-3xl">📝</span>
+            <span>TRANSCRIPT & ANALYSIS</span>
+          </CardTitle>
         </CardHeader>
-        <CardContent className="p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <h4 className="font-semibold mb-4">TRANSCRIPT</h4>
-              <div className="bg-gray-50 p-4 rounded-lg max-h-64 overflow-y-auto">
-                <p className="text-sm text-gray-700 mb-4">
-                  <span className="text-blue-600 font-medium">[00:00 - 00:30]</span><br />
-                  Good morning everyone, and thank you for joining today's quarterly sales presentation. 
-                  I'm excited to share our achievements and discuss our strategy moving forward.
-                </p>
-                <p className="text-sm text-gray-700 mb-4">
-                  <span className="text-blue-600 font-medium">[00:30 - 01:15]</span><br />
-                  Over the past quarter, we've seen remarkable growth in our key metrics. 
-                  Our team has exceeded expectations, and I want to highlight some of the 
-                  significant milestones we've achieved.
-                </p>
-                <p className="text-sm text-gray-700">
-                  <span className="text-blue-600 font-medium">[01:15 - 02:00]</span><br />
-                  The numbers speak for themselves - we've increased our revenue by 23% 
-                  compared to the same period last year, and our customer satisfaction 
-                  scores have reached an all-time high of 94%.
-                </p>
+        <CardContent className="p-8 bg-gradient-to-br from-indigo-50 to-white">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="bg-white p-6 rounded-xl shadow-lg">
+              <h4 className="font-bold mb-4 flex items-center">
+                <span className="text-xl mr-2">📄</span>
+                FULL TRANSCRIPT
+              </h4>
+              <div className="bg-gray-50 p-4 rounded-lg max-h-80 overflow-y-auto space-y-4">
+                <div className="border-l-4 border-blue-400 pl-4">
+                  <span className="text-blue-600 font-medium text-sm">[00:00 - 00:30]</span>
+                  <p className="text-gray-700 mt-1">
+                    Good morning everyone, and thank you for joining today's quarterly sales presentation. 
+                    I'm excited to share our achievements and discuss our strategy moving forward.
+                  </p>
+                </div>
+                <div className="border-l-4 border-green-400 pl-4">
+                  <span className="text-green-600 font-medium text-sm">[00:30 - 01:15]</span>
+                  <p className="text-gray-700 mt-1">
+                    Over the past quarter, we've seen remarkable growth in our key metrics. 
+                    Our team has exceeded expectations, and I want to highlight some of the 
+                    significant milestones we've achieved.
+                  </p>
+                </div>
+                <div className="border-l-4 border-purple-400 pl-4">
+                  <span className="text-purple-600 font-medium text-sm">[01:15 - 02:00]</span>
+                  <p className="text-gray-700 mt-1">
+                    The numbers speak for themselves - we've increased our revenue by 23% 
+                    compared to the same period last year, and our customer satisfaction 
+                    scores have reached an all-time high of 94%.
+                  </p>
+                </div>
               </div>
             </div>
-            <div>
-              <h4 className="font-semibold mb-4">SENTENCES</h4>
-              <div className="space-y-3">
-                <div className="text-sm">
-                  <span className="font-medium">1.</span> Good morning everyone, and thank you for joining today's quarterly sales presentation.
+            
+            <div className="bg-white p-6 rounded-xl shadow-lg">
+              <h4 className="font-bold mb-4 flex items-center">
+                <span className="text-xl mr-2">📊</span>
+                KEY SENTENCES
+              </h4>
+              <div className="space-y-4">
+                <div className="p-3 bg-blue-50 rounded-lg border-l-4 border-blue-400">
+                  <span className="font-medium text-blue-800">1.</span>
+                  <span className="ml-2 text-gray-700">Good morning everyone, and thank you for joining today's quarterly sales presentation.</span>
                 </div>
-                <div className="text-sm">
-                  <span className="font-medium">2.</span> I'm excited to share our achievements and discuss our strategy moving forward.
+                <div className="p-3 bg-green-50 rounded-lg border-l-4 border-green-400">
+                  <span className="font-medium text-green-800">2.</span>
+                  <span className="ml-2 text-gray-700">I'm excited to share our achievements and discuss our strategy moving forward.</span>
                 </div>
-                <div className="text-sm">
-                  <span className="font-medium">3.</span> Over the past quarter, we've seen remarkable growth in our key metrics.
+                <div className="p-3 bg-purple-50 rounded-lg border-l-4 border-purple-400">
+                  <span className="font-medium text-purple-800">3.</span>
+                  <span className="ml-2 text-gray-700">Over the past quarter, we've seen remarkable growth in our key metrics.</span>
                 </div>
-                <div className="text-sm">
-                  <span className="font-medium">4.</span> Our team has exceeded expectations, and I want to highlight some significant milestones.
+                <div className="p-3 bg-yellow-50 rounded-lg border-l-4 border-yellow-400">
+                  <span className="font-medium text-yellow-800">4.</span>
+                  <span className="ml-2 text-gray-700">Our team has exceeded expectations, and I want to highlight some significant milestones.</span>
                 </div>
-                <div className="text-sm">
-                  <span className="font-medium">5.</span> The numbers speak for themselves with 23% revenue increase.
+                <div className="p-3 bg-pink-50 rounded-lg border-l-4 border-pink-400">
+                  <span className="font-medium text-pink-800">5.</span>
+                  <span className="ml-2 text-gray-700">The numbers speak for themselves with 23% revenue increase.</span>
                 </div>
               </div>
             </div>
           </div>
           
-          <div className="mt-6 text-center">
-            <Button className="bg-orange-500 hover:bg-orange-600 text-white">
-              <Download className="w-4 h-4 mr-2" />
-              Download Report
+          <div className="mt-8 text-center">
+            <Button 
+              onClick={handleDownloadReport}
+              className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+            >
+              <Download className="w-5 h-5 mr-2" />
+              <span className="text-lg">📄 Download Complete Report</span>
             </Button>
           </div>
         </CardContent>
