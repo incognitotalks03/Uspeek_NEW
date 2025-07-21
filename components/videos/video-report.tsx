@@ -756,7 +756,7 @@ export function VideoReport({ video, onClose }: VideoReportProps) {
               <ul className="space-y-2">
                 <li className="flex items-center text-red-700">
                   <span className="mr-2">🔴</span>
-                  Reduce filler words like "um" and "uh"
+                  Reduce filler words like "um\" and "uh"
                 </li>
                 <li className="flex items-center text-red-700">
                   <span className="mr-2">🔴</span>
