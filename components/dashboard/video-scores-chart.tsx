@@ -52,10 +52,10 @@ export function VideoScoresChart() {
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
-          <p className="font-semibold text-gray-900 mb-2">{label}</p>
+        <div className="bg-gradient-to-br from-slate-800 to-slate-900 p-4 border-0 rounded-xl shadow-2xl backdrop-blur-sm">
+          <p className="font-semibold text-white mb-2">{label}</p>
           {payload.map((entry: any, index: number) => (
-            <p key={index} className="text-sm" style={{ color: entry.color }}>
+            <p key={index} className="text-sm text-gray-200" style={{ color: entry.color }}>
               {entry.name}: {entry.value}/100
             </p>
           ))}
@@ -66,20 +66,43 @@ export function VideoScoresChart() {
   };
 
   return (
-    <Card>
+    <Card className="bg-gradient-to-br from-slate-50 via-gray-50 to-zinc-50 border-0 shadow-xl hover:shadow-2xl transition-all duration-300">
       <CardHeader>
-        <CardTitle className="text-lg font-semibold">Video-wise Score Analysis</CardTitle>
+        <CardTitle className="text-lg font-semibold bg-gradient-to-r from-slate-600 to-gray-700 bg-clip-text text-transparent flex items-center space-x-2">
+          <div className="p-2 rounded-full bg-gradient-to-r from-slate-400 to-gray-500 shadow-lg">
+            <span className="text-xl filter drop-shadow-sm">📊</span>
+          </div>
+          <span>Video-wise Score Analysis</span>
+        </CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="bg-white/60 backdrop-blur-sm rounded-lg mx-4 mb-4">
         <div className="h-80">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={videoScoresData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+              <defs>
+                <linearGradient id="overallGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8}/>
+                  <stop offset="95%" stopColor="#3b82f6" stopOpacity={0.6}/>
+                </linearGradient>
+                <linearGradient id="bodyGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#10b981" stopOpacity={0.8}/>
+                  <stop offset="95%" stopColor="#10b981" stopOpacity={0.6}/>
+                </linearGradient>
+                <linearGradient id="vocalGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.8}/>
+                  <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0.6}/>
+                </linearGradient>
+                <linearGradient id="wordGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.8}/>
+                  <stop offset="95%" stopColor="#f59e0b" stopOpacity={0.6}/>
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
               <XAxis 
                 dataKey="video" 
                 axisLine={false}
                 tickLine={false}
-                tick={{ fontSize: 12, fill: '#6b7280' }}
+                tick={{ fontSize: 12, fill: '#64748b', fontWeight: 500 }}
                 angle={-45}
                 textAnchor="end"
                 height={80}
@@ -87,15 +110,21 @@ export function VideoScoresChart() {
               <YAxis 
                 axisLine={false}
                 tickLine={false}
-                tick={{ fontSize: 12, fill: '#6b7280' }}
+                tick={{ fontSize: 12, fill: '#64748b', fontWeight: 500 }}
                 domain={[0, 100]}
               />
               <Tooltip content={<CustomTooltip />} />
-              <Legend />
-              <Bar dataKey="overallScore" fill="#3b82f6" name="Overall Score" radius={[2, 2, 0, 0]} />
-              <Bar dataKey="bodyLanguage" fill="#10b981" name="Body Language" radius={[2, 2, 0, 0]} />
-              <Bar dataKey="vocalTone" fill="#8b5cf6" name="Vocal Tone" radius={[2, 2, 0, 0]} />
-              <Bar dataKey="wordPower" fill="#f59e0b" name="Word Power" radius={[2, 2, 0, 0]} />
+              <Legend 
+                wrapperStyle={{
+                  paddingTop: '20px',
+                  fontSize: '14px',
+                  fontWeight: '500'
+                }}
+              />
+              <Bar dataKey="overallScore" fill="url(#overallGradient)" name="Overall Score" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="bodyLanguage" fill="url(#bodyGradient)" name="Body Language" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="vocalTone" fill="url(#vocalGradient)" name="Vocal Tone" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="wordPower" fill="url(#wordGradient)" name="Word Power" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>

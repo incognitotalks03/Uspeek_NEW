@@ -9,21 +9,24 @@ const scoreData = [
     score: 82,
     previousScore: 78,
     icon: '🤝',
-    color: 'bg-green-500'
+    gradient: 'from-emerald-400 to-teal-500',
+    bgGradient: 'from-emerald-50 to-teal-50'
   },
   {
     title: 'Vocal Tone Score',
     score: 75,
     previousScore: 73,
     icon: '🎤',
-    color: 'bg-blue-500'
+    gradient: 'from-blue-400 to-indigo-500',
+    bgGradient: 'from-blue-50 to-indigo-50'
   },
   {
     title: 'Word Power Score',
     score: 77,
     previousScore: 79,
     icon: '💬',
-    color: 'bg-purple-500'
+    gradient: 'from-purple-400 to-pink-500',
+    bgGradient: 'from-purple-50 to-pink-50'
   }
 ];
 
@@ -36,28 +39,32 @@ export function ScoreCards() {
         const isStable = change === 0;
 
         return (
-          <Card key={index} className="hover:shadow-lg transition-shadow duration-200">
+          <Card key={index} className={`bg-gradient-to-br ${item.bgGradient} border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105`}>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">
+              <CardTitle className="text-sm font-semibold text-gray-700">
                 {item.title}
               </CardTitle>
-              <div className="text-2xl">{item.icon}</div>
+              <div className={`text-3xl p-2 rounded-full bg-gradient-to-r ${item.gradient} shadow-lg`}>
+                <span className="filter drop-shadow-sm">{item.icon}</span>
+              </div>
             </CardHeader>
-            <CardContent>
+            <CardContent className="bg-white/60 backdrop-blur-sm rounded-lg mx-4 mb-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="text-3xl font-bold text-gray-900">{item.score}</div>
-                  <div className="text-sm text-gray-500">out of 100</div>
+                  <div className={`text-4xl font-bold bg-gradient-to-r ${item.gradient} bg-clip-text text-transparent`}>
+                    {item.score}
+                  </div>
+                  <div className="text-sm text-gray-600 font-medium">out of 100</div>
                 </div>
-                <div className="flex items-center space-x-1">
+                <div className="flex items-center space-x-1 bg-white/80 px-3 py-1 rounded-full shadow-md">
                   {isStable ? (
-                    <Minus className="w-4 h-4 text-gray-400" />
+                    <Minus className="w-5 h-5 text-gray-500" />
                   ) : isImproving ? (
-                    <TrendingUp className="w-4 h-4 text-green-500" />
+                    <TrendingUp className="w-5 h-5 text-green-500" />
                   ) : (
-                    <TrendingDown className="w-4 h-4 text-red-500" />
+                    <TrendingDown className="w-5 h-5 text-red-500" />
                   )}
-                  <span className={`text-sm font-medium ${
+                  <span className={`text-sm font-semibold ${
                     isStable ? 'text-gray-400' : 
                     isImproving ? 'text-green-500' : 'text-red-500'
                   }`}>
