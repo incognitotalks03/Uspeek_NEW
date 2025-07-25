@@ -1,12 +1,5 @@
-'use client';
-
 import { notFound } from 'next/navigation';
-import { useParams } from 'next/navigation';
-import { DashboardLayout } from '@/components/layout/dashboard-layout';
-import { VideoReport } from '@/components/videos/video-report';
-import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { VideoReportPage } from '@/components/videos/video-report-page';
 
 // Generate static params for static export
 export function generateStaticParams() {
@@ -66,28 +59,14 @@ const getVideoById = (id: string) => {
   return video;
 };
 
-export default function VideoReportPage() {
-  const params = useParams();
-  const router = useRouter();
-  const videoId = params.id as string;
-  const video = getVideoById(videoId);
+interface PageProps {
+  params: {
+    id: string;
+  };
+}
 
-  return (
-    <DashboardLayout>
-      <div className="space-y-6">
-        <div className="flex items-center space-x-4">
-          <Button 
-            variant="outline" 
-            onClick={() => router.back()}
-            className="flex items-center space-x-2"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>Back to Videos</span>
-          </Button>
-          <h1 className="text-2xl font-bold text-gray-900">Video Analysis Report</h1>
-        </div>
-        <VideoReport video={video} onClose={() => router.back()} />
-      </div>
-    </DashboardLayout>
-  );
+export default function ReportPage({ params }: PageProps) {
+  const video = getVideoById(params.id);
+  
+  return <VideoReportPage video={video} />;
 }
