@@ -306,12 +306,7 @@ export default function LearningLessonsPage() {
                     <Badge className={getDifficultyColor(lesson.difficulty)}>
                       {lesson.difficulty}
                     </Badge>
-                    <div className="flex items-center space-x-1">
-                      <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                      <span className="text-sm font-medium">{lesson.rating}</span>
-                    </div>
                   </div>
-                    onClick={() => handleStartLesson(lesson.category)}
 
                   <Button className="w-full bg-blue-600 hover:bg-blue-700">
                     <Play className="w-4 h-4 mr-2" />
