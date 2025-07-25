@@ -285,6 +285,208 @@ export function VideoReport({ video, onClose }: VideoReportProps) {
         ))}
       </div>
 
+      {/* Detailed Score Breakdown */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center space-x-2">
+            <BarChart3 className="w-5 h-5 text-blue-500" />
+            <span>Detailed Score Breakdown</span>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-6">
+            {/* Body Language Details */}
+            <div className="p-4 bg-emerald-50 rounded-lg border border-emerald-200">
+              <div className="flex items-center justify-between mb-3">
+                <h4 className="font-semibold text-emerald-900 flex items-center space-x-2">
+                  <span>🤝</span>
+                  <span>Body Language Analysis</span>
+                </h4>
+                <Badge className="bg-emerald-100 text-emerald-800 font-semibold">
+                  {video.bodyLanguageScore}/100
+                </Badge>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                <div className="text-center">
+                  <div className="font-semibold text-emerald-700">Eye Contact</div>
+                  <div className="text-2xl font-bold text-emerald-600">92</div>
+                  <div className="text-xs text-emerald-600">Excellent</div>
+                </div>
+                <div className="text-center">
+                  <div className="font-semibold text-emerald-700">Posture</div>
+                  <div className="text-2xl font-bold text-emerald-600">88</div>
+                  <div className="text-xs text-emerald-600">Very Good</div>
+                </div>
+                <div className="text-center">
+                  <div className="font-semibold text-emerald-700">Gestures</div>
+                  <div className="text-2xl font-bold text-yellow-600">68</div>
+                  <div className="text-xs text-yellow-600">Needs Work</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Vocal Tone Details */}
+            <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+              <div className="flex items-center justify-between mb-3">
+                <h4 className="font-semibold text-blue-900 flex items-center space-x-2">
+                  <span>🎤</span>
+                  <span>Vocal Tone Analysis</span>
+                </h4>
+                <Badge className="bg-blue-100 text-blue-800 font-semibold">
+                  {video.vocalToneScore}/100
+                </Badge>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                <div className="text-center">
+                  <div className="font-semibold text-blue-700">Clarity</div>
+                  <div className="text-2xl font-bold text-blue-600">84</div>
+                  <div className="text-xs text-blue-600">Very Good</div>
+                </div>
+                <div className="text-center">
+                  <div className="font-semibold text-blue-700">Pace</div>
+                  <div className="text-2xl font-bold text-yellow-600">65</div>
+                  <div className="text-xs text-yellow-600">Too Fast</div>
+                </div>
+                <div className="text-center">
+                  <div className="font-semibold text-blue-700">Volume</div>
+                  <div className="text-2xl font-bold text-blue-600">78</div>
+                  <div className="text-xs text-blue-600">Good</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Word Power Details */}
+            <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
+              <div className="flex items-center justify-between mb-3">
+                <h4 className="font-semibold text-purple-900 flex items-center space-x-2">
+                  <span>💬</span>
+                  <span>Word Power Analysis</span>
+                </h4>
+                <Badge className="bg-purple-100 text-purple-800 font-semibold">
+                  {video.wordPowerScore}/100
+                </Badge>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                <div className="text-center">
+                  <div className="font-semibold text-purple-700">Vocabulary</div>
+                  <div className="text-2xl font-bold text-purple-600">82</div>
+                  <div className="text-xs text-purple-600">Very Good</div>
+                </div>
+                <div className="text-center">
+                  <div className="font-semibold text-purple-700">Filler Words</div>
+                  <div className="text-2xl font-bold text-red-600">45</div>
+                  <div className="text-xs text-red-600">Too Many</div>
+                </div>
+                <div className="text-center">
+                  <div className="font-semibold text-purple-700">Grammar</div>
+                  <div className="text-2xl font-bold text-purple-600">85</div>
+                  <div className="text-xs text-purple-600">Excellent</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Performance Metrics */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <Target className="w-5 h-5 text-green-500" />
+              <span>Key Performance Indicators</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div className="flex items-center space-x-3">
+                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                  <span className="font-medium">Engagement Score</span>
+                </div>
+                <div className="text-right">
+                  <div className="font-bold text-green-600">8.2/10</div>
+                  <div className="text-xs text-gray-500">Very High</div>
+                </div>
+              </div>
+              
+              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div className="flex items-center space-x-3">
+                  <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                  <span className="font-medium">Confidence Level</span>
+                </div>
+                <div className="text-right">
+                  <div className="font-bold text-blue-600">7.8/10</div>
+                  <div className="text-xs text-gray-500">High</div>
+                </div>
+              </div>
+              
+              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div className="flex items-center space-x-3">
+                  <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
+                  <span className="font-medium">Clarity Index</span>
+                </div>
+                <div className="text-right">
+                  <div className="font-bold text-purple-600">7.5/10</div>
+                  <div className="text-xs text-gray-500">Good</div>
+                </div>
+              </div>
+              
+              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div className="flex items-center space-x-3">
+                  <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
+                  <span className="font-medium">Persuasiveness</span>
+                </div>
+                <div className="text-right">
+                  <div className="font-bold text-orange-600">6.9/10</div>
+                  <div className="text-xs text-gray-500">Moderate</div>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <Clock className="w-5 h-5 text-blue-500" />
+              <span>Time-based Analytics</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="p-3 bg-blue-50 rounded-lg">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="font-medium text-blue-900">Speaking Time</span>
+                  <span className="font-bold text-blue-600">11:45 / 12:34</span>
+                </div>
+                <Progress value={93} className="h-2" />
+                <div className="text-xs text-blue-600 mt-1">93% of total duration</div>
+              </div>
+              
+              <div className="p-3 bg-yellow-50 rounded-lg">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="font-medium text-yellow-900">Pause Time</span>
+                  <span className="font-bold text-yellow-600">0:49</span>
+                </div>
+                <Progress value={7} className="h-2" />
+                <div className="text-xs text-yellow-600 mt-1">7% of total duration</div>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-3">
+                <div className="text-center p-3 bg-gray-50 rounded-lg">
+                  <div className="font-bold text-gray-900">156</div>
+                  <div className="text-xs text-gray-600">Words per minute</div>
+                </div>
+                <div className="text-center p-3 bg-gray-50 rounded-lg">
+                  <div className="font-bold text-gray-900">23</div>
+                  <div className="text-xs text-gray-600">Filler words</div>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
       {/* Detailed Analysis */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card>
@@ -315,6 +517,20 @@ export function VideoReport({ video, onClose }: VideoReportProps) {
                 <div>
                   <div className="font-medium">Confident Posture</div>
                   <div className="text-sm text-gray-600">Demonstrated strong, professional posture</div>
+                </div>
+              </li>
+              <li className="flex items-start space-x-3">
+                <div className="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
+                <div>
+                  <div className="font-medium">Strong Opening</div>
+                  <div className="text-sm text-gray-600">Captured attention effectively in the first 30 seconds</div>
+                </div>
+              </li>
+              <li className="flex items-start space-x-3">
+                <div className="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
+                <div>
+                  <div className="font-medium">Good Vocabulary Usage</div>
+                  <div className="text-sm text-gray-600">Used appropriate professional terminology</div>
                 </div>
               </li>
             </ul>
@@ -351,11 +567,104 @@ export function VideoReport({ video, onClose }: VideoReportProps) {
                   <div className="text-sm text-gray-600">Incorporate more natural hand gestures</div>
                 </div>
               </li>
+              <li className="flex items-start space-x-3">
+                <div className="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+                <div>
+                  <div className="font-medium">Conclusion Strength</div>
+                  <div className="text-sm text-gray-600">End with a more impactful closing statement</div>
+                </div>
+              </li>
+              <li className="flex items-start space-x-3">
+                <div className="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+                <div>
+                  <div className="font-medium">Audience Engagement</div>
+                  <div className="text-sm text-gray-600">Include more interactive elements or questions</div>
+                </div>
+              </li>
             </ul>
           </CardContent>
         </Card>
       </div>
 
+      {/* Comparative Analysis */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center space-x-2">
+            <BarChart3 className="w-5 h-5 text-purple-500" />
+            <span>Comparative Analysis</span>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div>
+              <h4 className="font-semibold mb-4">Performance vs. Previous Videos</h4>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm">Overall Score</span>
+                  <div className="flex items-center space-x-2">
+                    <span className="text-sm font-medium">{video.overallScore}/100</span>
+                    <TrendingUp className="w-4 h-4 text-green-500" />
+                    <span className="text-xs text-green-600">+6 from last video</span>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm">Body Language</span>
+                  <div className="flex items-center space-x-2">
+                    <span className="text-sm font-medium">{video.bodyLanguageScore}/100</span>
+                    <TrendingUp className="w-4 h-4 text-green-500" />
+                    <span className="text-xs text-green-600">+4 from last video</span>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm">Vocal Tone</span>
+                  <div className="flex items-center space-x-2">
+                    <span className="text-sm font-medium">{video.vocalToneScore}/100</span>
+                    <TrendingUp className="w-4 h-4 text-green-500" />
+                    <span className="text-xs text-green-600">+2 from last video</span>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm">Word Power</span>
+                  <div className="flex items-center space-x-2">
+                    <span className="text-sm font-medium">{video.wordPowerScore}/100</span>
+                    <TrendingDown className="w-4 h-4 text-red-500" />
+                    <span className="text-xs text-red-600">-3 from last video</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div>
+              <h4 className="font-semibold mb-4">Industry Benchmarks</h4>
+              <div className="space-y-3">
+                <div className="p-3 bg-blue-50 rounded-lg">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium">Your Score</span>
+                    <span className="font-bold text-blue-600">{video.overallScore}/100</span>
+                  </div>
+                </div>
+                <div className="p-3 bg-gray-50 rounded-lg">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium">Industry Average</span>
+                    <span className="font-bold text-gray-600">72/100</span>
+                  </div>
+                </div>
+                <div className="p-3 bg-green-50 rounded-lg">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium">Top 10% Performers</span>
+                    <span className="font-bold text-green-600">85/100</span>
+                  </div>
+                </div>
+                <div className="text-center mt-4">
+                  <Badge className="bg-blue-100 text-blue-800">
+                    You're performing {video.overallScore > 72 ? 'above' : 'below'} industry average
+                  </Badge>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
       {/* Recommendations */}
       <Card>
         <CardHeader>
@@ -376,6 +685,18 @@ export function VideoReport({ video, onClose }: VideoReportProps) {
               <h4 className="font-semibold text-green-900 mb-2">Body Language Training</h4>
               <p className="text-sm text-green-700">
                 Continue building on your strong foundation with advanced gesture techniques.
+              </p>
+            </div>
+            <div className="p-4 bg-purple-50 rounded-lg">
+              <h4 className="font-semibold text-purple-900 mb-2">Vocal Exercises</h4>
+              <p className="text-sm text-purple-700">
+                Practice breathing exercises and vocal warm-ups to improve tone variation.
+              </p>
+            </div>
+            <div className="p-4 bg-orange-50 rounded-lg">
+              <h4 className="font-semibold text-orange-900 mb-2">Content Structure</h4>
+              <p className="text-sm text-orange-700">
+                Work on creating stronger openings and conclusions for maximum impact.
               </p>
             </div>
           </div>
