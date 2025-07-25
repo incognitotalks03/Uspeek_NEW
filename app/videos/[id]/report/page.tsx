@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import { VideoReportPage } from '@/components/videos/video-report-page';
 
 // Generate static params for static export
-export function generateStaticParams() {
+export async function generateStaticParams() {
   // Return the video IDs that should be pre-generated
   return [
     { id: '1' },
