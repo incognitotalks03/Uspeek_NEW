@@ -1,6 +1,8 @@
 'use client';
 
+import { useState } from 'react';
 import { DashboardLayout } from '@/components/layout/dashboard-layout';
+import { AssignmentViewer } from '@/components/learning/assignment-viewer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -90,6 +92,8 @@ const lessons = [
 ];
 
 export default function LearningLessonsPage() {
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
       case 'Beginner': return 'bg-green-100 text-green-800';
@@ -116,6 +120,21 @@ export default function LearningLessonsPage() {
       default: return 'bg-gray-100 text-gray-800';
     }
   };
+
+  const handleStartLesson = (category: string) => {
+    setSelectedCategory(category);
+  };
+
+  if (selectedCategory) {
+    return (
+      <DashboardLayout>
+        <AssignmentViewer 
+          category={selectedCategory} 
+          onBack={() => setSelectedCategory(null)} 
+        />
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout>
@@ -292,6 +311,7 @@ export default function LearningLessonsPage() {
                       <span className="text-sm font-medium">{lesson.rating}</span>
                     </div>
                   </div>
+                    onClick={() => handleStartLesson(lesson.category)}
 
                   <Button className="w-full bg-blue-600 hover:bg-blue-700">
                     <Play className="w-4 h-4 mr-2" />
