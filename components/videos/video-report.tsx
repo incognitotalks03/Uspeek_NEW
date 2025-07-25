@@ -121,7 +121,7 @@ export function VideoReport({ video, onClose }: VideoReportProps) {
   };
 
   return (
-    <div className="space-y-8 max-h-[90vh] overflow-y-auto bg-gradient-to-br from-slate-50 to-blue-50 p-6 rounded-xl">
+    <div className="space-y-8 bg-gradient-to-br from-slate-50 to-blue-50 p-6 rounded-xl">
       {/* Hero Header Section */}
       <div className="relative bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white p-8 rounded-2xl shadow-2xl overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-32 translate-x-32"></div>

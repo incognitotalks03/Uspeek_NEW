@@ -1,12 +1,11 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { VideoReport } from './video-report';
 import { Eye, Download, Calendar, User } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 interface Video {
   id: string;
@@ -69,8 +68,7 @@ interface VideoListProps {
 }
 
 export function VideoList({ filters }: VideoListProps) {
-  const [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
-  const [isReportOpen, setIsReportOpen] = useState(false);
+  const router = useRouter();
 
   const filteredVideos = mockVideos.filter(video => {
     const matchesSearch = video.speaker.toLowerCase().includes(filters.search.toLowerCase()) ||
@@ -89,8 +87,7 @@ export function VideoList({ filters }: VideoListProps) {
   };
 
   const handleViewReport = (video: Video) => {
-    setSelectedVideo(video);
-    setIsReportOpen(true);
+    router.push(`/videos/${video.id}/report`);
   };
 
   const handleDownloadVideo = (video: Video) => {
@@ -188,21 +185,6 @@ export function VideoList({ filters }: VideoListProps) {
           <div className="text-gray-500">No videos found matching your criteria.</div>
         </div>
       )}
-
-      {/* Video Report Dialog */}
-      <Dialog open={isReportOpen} onOpenChange={setIsReportOpen}>
-        <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Video Analysis Report</DialogTitle>
-          </DialogHeader>
-          {selectedVideo && (
-            <VideoReport 
-              video={selectedVideo} 
-              onClose={() => setIsReportOpen(false)} 
-            />
-          )}
-        </DialogContent>
-      </Dialog>
     </>
   );
 }
