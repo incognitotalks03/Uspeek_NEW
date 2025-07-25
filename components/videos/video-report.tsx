@@ -4,7 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from 'recharts';
-import { Download, User, Calendar, Clock, TrendingUp, TrendingDown, Eye, Mic, Volume2, Star, Award, Target, Zap } from 'lucide-react';
+import { Download, User, Calendar, Clock, TrendingUp, TrendingDown, Eye, Mic, Volume2, Star, Award, Target, Zap, Play, Pause, Volume1, VolumeX, Maximize } from 'lucide-react';
+import { useState, useRef } from 'react';
 
 interface VideoReportProps {
   video: {
@@ -57,6 +58,48 @@ const emotionData = [
 ];
 
 export function VideoReport({ video, onClose }: VideoReportProps) {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const togglePlay = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+
+  const toggleMute = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !isMuted;
+      setIsMuted(!isMuted);
+    }
+  };
+
+  const handleTimeUpdate = () => {
+    if (videoRef.current) {
+      setCurrentTime(videoRef.current.currentTime);
+    }
+  };
+
+  const handleLoadedMetadata = () => {
+    if (videoRef.current) {
+      setDuration(videoRef.current.duration);
+    }
+  };
+
+  const formatTime = (time: number) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  };
+
   const getScoreColor = (score: number) => {
     if (score >= 80) return 'text-green-600 bg-green-100';
     if (score >= 70) return 'text-yellow-600 bg-yellow-100';
@@ -217,20 +260,92 @@ export function VideoReport({ video, onClose }: VideoReportProps) {
         </div>
       </div>
 
+      {/* Video Player Section */}
+      <Card className="shadow-2xl border-0 overflow-hidden">
+        <CardHeader className="bg-gradient-to-r from-gray-800 to-gray-900 text-white p-6">
+          <CardTitle className="flex items-center space-x-3 text-2xl">
+            <span className="text-3xl">🎬</span>
+            <span>VIDEO PLAYBACK</span>
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-8 bg-gradient-to-br from-gray-50 to-white">
+          <div className="relative bg-black rounded-xl overflow-hidden shadow-2xl">
+            <video
+              ref={videoRef}
+              className="w-full h-auto max-h-96 object-contain"
+              onTimeUpdate={handleTimeUpdate}
+              onLoadedMetadata={handleLoadedMetadata}
+              onPlay={() => setIsPlaying(true)}
+              onPause={() => setIsPlaying(false)}
+            >
+              <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+            
+            {/* Video Controls Overlay */}
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+              <div className="flex items-center space-x-4">
+                <Button
+                  onClick={togglePlay}
+                  variant="ghost"
+                  size="sm"
+                  className="text-white hover:bg-white/20"
+                >
+                  {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
+                </Button>
+                
+                <div className="flex-1">
+                  <div className="bg-white/30 rounded-full h-1 relative">
+                    <div 
+                      className="bg-blue-500 h-1 rounded-full transition-all duration-300"
+                      style={{ width: `${duration ? (currentTime / duration) * 100 : 0}%` }}
+                    ></div>
+                  </div>
+                </div>
+                
+                <span className="text-white text-sm font-medium">
+                  {formatTime(currentTime)} / {formatTime(duration)}
+                </span>
+                
+                <Button
+                  onClick={toggleMute}
+                  variant="ghost"
+                  size="sm"
+                  className="text-white hover:bg-white/20"
+                >
+                  {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume1 className="w-5 h-5" />}
+                </Button>
+              </div>
+            </div>
+          </div>
+          
+          <div className="mt-4 text-center">
+            <p className="text-gray-600 text-sm">
+              📹 Original video: <span className="font-semibold">{video.title}</span> by {video.speaker}
+            </p>
+          </div>
+        </CardContent>
+      </Card>
       {/* Score Overview Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
-          <CardHeader className="text-center pb-2 px-4">
-            <CardTitle className="text-blue-700 font-bold text-lg">🤝 Body Language</CardTitle>
+          <CardHeader className="text-center pb-4">
+            <CardTitle className="text-blue-700 font-bold text-lg flex items-center justify-center space-x-2">
+              <span className="text-2xl">🤝</span>
+              <span>Body Language</span>
+            </CardTitle>
           </CardHeader>
-          <CardContent className="flex justify-center pb-4 px-4">
+          <CardContent className="flex justify-center pb-6">
             <CircularProgress score={video.bodyLanguageScore} color="#3b82f6" emoji="🤝" />
           </CardContent>
         </Card>
 
         <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
-          <CardHeader className="text-center pb-2">
-            <CardTitle className="text-purple-700 font-bold text-lg">🎤 Vocal Tone</CardTitle>
+          <CardHeader className="text-center pb-4">
+            <CardTitle className="text-purple-700 font-bold text-lg flex items-center justify-center space-x-2">
+              <span className="text-2xl">🎤</span>
+              <span>Vocal Tone</span>
+            </CardTitle>
           </CardHeader>
           <CardContent className="flex justify-center pb-6">
             <CircularProgress score={video.vocalToneScore} color="#8b5cf6" emoji="🎤" />
@@ -238,8 +353,11 @@ export function VideoReport({ video, onClose }: VideoReportProps) {
         </Card>
 
         <Card className="bg-gradient-to-br from-pink-50 to-pink-100 border-pink-200 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
-          <CardHeader className="text-center pb-2">
-            <CardTitle className="text-pink-700 font-bold text-lg">💬 Word Power</CardTitle>
+          <CardHeader className="text-center pb-4">
+            <CardTitle className="text-pink-700 font-bold text-lg flex items-center justify-center space-x-2">
+              <span className="text-2xl">💬</span>
+              <span>Word Power</span>
+            </CardTitle>
           </CardHeader>
           <CardContent className="flex justify-center pb-6">
             <CircularProgress score={video.wordPowerScore} color="#ec4899" emoji="💬" />
