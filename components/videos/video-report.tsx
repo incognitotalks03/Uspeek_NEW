@@ -106,24 +106,44 @@ export function VideoReport({ video, onClose }: VideoReportProps) {
   return (
     <div className="space-y-6">
       {/* Video Title */}
-      <div className="text-center">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">{video.title}</h1>
-        <p className="text-gray-600">Video Analysis Report</p>
+      <div className="text-center mb-8">
+        <div className="inline-flex items-center space-x-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-full shadow-lg mb-4">
+          <span className="text-2xl">🎬</span>
+          <span className="font-bold text-lg">Video Analysis Report</span>
+        </div>
+        <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-2">{video.title}</h1>
+        <div className="flex items-center justify-center space-x-6 text-sm text-gray-500">
+          <div className="flex items-center space-x-1">
+            <User className="w-4 h-4" />
+            <span>{video.speaker}</span>
+          </div>
+          <div className="flex items-center space-x-1">
+            <Calendar className="w-4 h-4" />
+            <span>{new Date(video.uploadDate).toLocaleDateString()}</span>
+          </div>
+          <div className="flex items-center space-x-1">
+            <Clock className="w-4 h-4" />
+            <span>{video.duration}</span>
+          </div>
+        </div>
       </div>
 
       {/* Video Player and Info Card */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
         {/* Video Player - 2/3 width */}
         <div className="lg:col-span-2">
-          <Card className="overflow-hidden">
-            <CardHeader className="bg-gray-900 text-white p-4">
-              <CardTitle className="text-lg">Video Playback</CardTitle>
+          <Card className="overflow-hidden shadow-2xl border-0 bg-gradient-to-br from-gray-50 to-white">
+            <CardHeader className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white p-6">
+              <CardTitle className="text-xl font-bold flex items-center space-x-2">
+                <Play className="w-6 h-6" />
+                <span>Video Playback</span>
+              </CardTitle>
             </CardHeader>
             <CardContent className="p-0">
               <div className="relative">
                 <video
                   ref={videoRef}
-                  className="w-full h-64 lg:h-80 object-cover"
+                  className="w-full h-64 lg:h-96 object-cover"
                   poster={video.thumbnail}
                 >
                   <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4" />
@@ -131,36 +151,36 @@ export function VideoReport({ video, onClose }: VideoReportProps) {
                 </video>
                 
                 {/* Video Controls */}
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-                  <div className="flex items-center space-x-4">
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-6">
+                  <div className="flex items-center space-x-6">
                     <Button
                       variant="ghost"
-                      size="sm"
+                      size="lg"
                       onClick={togglePlay}
-                      className="text-white hover:bg-white/20"
+                      className="text-white hover:bg-white/20 hover:scale-110 transition-all duration-200"
                     >
-                      {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
+                      {isPlaying ? <Pause className="w-6 h-6" /> : <Play className="w-6 h-6" />}
                     </Button>
                     
                     <div className="flex-1">
                       <Progress
                         value={duration ? (currentTime / duration) * 100 : 0}
-                        className="h-2"
+                        className="h-3 bg-white/20"
                         onValueChange={handleProgressChange}
                       />
                     </div>
                     
-                    <span className="text-white text-sm">
+                    <span className="text-white text-sm font-medium bg-black/40 px-3 py-1 rounded-full">
                       {formatTime(currentTime)} / {formatTime(duration)}
                     </span>
                     
                     <Button
                       variant="ghost"
-                      size="sm"
+                      size="lg"
                       onClick={toggleMute}
-                      className="text-white hover:bg-white/20"
+                      className="text-white hover:bg-white/20 hover:scale-110 transition-all duration-200"
                     >
-                      {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
+                      {isMuted ? <VolumeX className="w-6 h-6" /> : <Volume2 className="w-6 h-6" />}
                     </Button>
                   </div>
                 </div>
@@ -171,34 +191,36 @@ export function VideoReport({ video, onClose }: VideoReportProps) {
 
         {/* Info Card - 1/3 width */}
         <div className="lg:col-span-1">
-          <div className="relative h-full min-h-[400px] bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-2xl p-6 text-white overflow-hidden">
+          <div className="relative h-full min-h-[500px] bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-3xl p-8 text-white overflow-hidden shadow-2xl">
             {/* Decorative elements */}
-            <div className="absolute top-4 right-4 w-16 h-16 bg-white/10 rounded-full backdrop-blur-sm"></div>
-            <div className="absolute bottom-4 left-4 w-12 h-12 bg-white/10 rounded-full backdrop-blur-sm"></div>
+            <div className="absolute top-6 right-6 w-20 h-20 bg-white/10 rounded-full backdrop-blur-sm animate-pulse"></div>
+            <div className="absolute bottom-6 left-6 w-16 h-16 bg-white/10 rounded-full backdrop-blur-sm animate-pulse"></div>
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-white/5 rounded-full backdrop-blur-sm"></div>
             
             <div className="relative z-10 h-full flex flex-col">
               {/* Header */}
-              <div className="mb-6">
-                <div className="flex items-center space-x-2 mb-4">
-                  <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
-                    <Target className="w-6 h-6 text-white" />
+              <div className="mb-8">
+                <div className="flex items-center space-x-3 mb-6">
+                  <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-sm shadow-lg">
+                    <span className="text-3xl">🚀</span>
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold">🚀 YOUR USPEEK REPORT</h3>
+                    <h3 className="text-xl font-bold">YOUR USPEEK REPORT</h3>
+                    <p className="text-white/80 text-sm">Comprehensive Analysis</p>
                   </div>
                 </div>
                 
-                <div className="space-y-2 text-sm">
-                  <div className="flex items-center space-x-2">
-                    <User className="w-4 h-4" />
+                <div className="space-y-3 text-sm">
+                  <div className="flex items-center space-x-3 bg-white/10 rounded-lg p-3 backdrop-blur-sm">
+                    <User className="w-5 h-5" />
                     <span>{video.speaker}</span>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <Calendar className="w-4 h-4" />
+                  <div className="flex items-center space-x-3 bg-white/10 rounded-lg p-3 backdrop-blur-sm">
+                    <Calendar className="w-5 h-5" />
                     <span>{new Date(video.uploadDate).toLocaleDateString()}</span>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <Clock className="w-4 h-4" />
+                  <div className="flex items-center space-x-3 bg-white/10 rounded-lg p-3 backdrop-blur-sm">
+                    <Clock className="w-5 h-5" />
                     <span>{video.duration}</span>
                   </div>
                 </div>
@@ -206,11 +228,166 @@ export function VideoReport({ video, onClose }: VideoReportProps) {
 
               {/* Score Display */}
               <div className="flex-1 flex flex-col justify-center">
-                <div className="bg-white/20 rounded-2xl p-6 backdrop-blur-sm text-center mb-6">
-                  <div className="text-4xl font-bold mb-2">
-                    {(video.overallScore / 20).toFixed(1)}<span className="text-2xl">/5</span>
+                <div className="bg-white/20 rounded-3xl p-8 backdrop-blur-sm text-center mb-8 shadow-xl">
+                  <div className="text-6xl font-bold mb-4">
+                    {(video.overallScore / 20).toFixed(1)}<span className="text-3xl">/5</span>
                   </div>
-                  <div className="text-lg font-semibold">
+                  <div className="text-xl font-bold flex items-center justify-center space-x-2">
+                    <span>🎭</span>
+                    <span>NICE SHOW!</span>
+                  </div>
+                  <div className="mt-4 text-white/80 text-sm">
+                    Above Average Performance
+                  </div>
+                </div>
+                
+                {/* Quick Stats */}
+                <div className="grid grid-cols-2 gap-3 mb-6">
+                  <div className="bg-white/10 rounded-xl p-3 text-center backdrop-blur-sm">
+                    <div className="text-2xl font-bold">92%</div>
+                    <div className="text-xs text-white/80">Confidence</div>
+                  </div>
+                  <div className="bg-white/10 rounded-xl p-3 text-center backdrop-blur-sm">
+                    <div className="text-2xl font-bold">156</div>
+                    <div className="text-xs text-white/80">WPM</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Download Button */}
+              <Button 
+                className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-4 rounded-2xl shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-200"
+                onClick={() => {/* Handle download */}}
+              >
+                <Download className="w-6 h-6 mr-3" />
+                <span className="text-lg">📄 Download Report</span>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Score Overview Cards */}
+      <div className="mb-12">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-2">
+            📊 Performance Overview
+          </h2>
+          <p className="text-gray-600">Detailed breakdown of your communication skills</p>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {[
+            { title: 'Body Language', score: video.bodyLanguageScore, icon: '🤝', gradient: 'from-emerald-400 to-teal-500', bgGradient: 'from-emerald-50 to-teal-50' },
+            { title: 'Vocal Tone', score: video.vocalToneScore, icon: '🎤', gradient: 'from-blue-400 to-indigo-500', bgGradient: 'from-blue-50 to-indigo-50' },
+            { title: 'Word Power', score: video.wordPowerScore, icon: '💬', gradient: 'from-purple-400 to-pink-500', bgGradient: 'from-purple-50 to-pink-50' }
+          ].map((item, index) => (
+            <Card key={index} className={`text-center hover:shadow-2xl transition-all duration-300 transform hover:scale-105 bg-gradient-to-br ${item.bgGradient} border-0 shadow-xl`}>
+              <CardHeader className="pb-4">
+                <div className="flex items-center justify-center space-x-3 mb-2">
+                  <div className={`p-3 rounded-2xl bg-gradient-to-r ${item.gradient} shadow-lg`}>
+                    <span className="text-3xl filter drop-shadow-sm">{item.icon}</span>
+                  </div>
+                  <CardTitle className={`text-xl font-bold bg-gradient-to-r ${item.gradient} bg-clip-text text-transparent`}>
+                    {item.title}
+                  </CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent className="bg-white/60 backdrop-blur-sm rounded-xl mx-4 mb-4 p-6">
+                <div className="relative w-32 h-32 mx-auto mb-6">
+                  <svg className="w-32 h-32 transform -rotate-90" viewBox="0 0 100 100">
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="40"
+                      stroke="#f1f5f9"
+                      strokeWidth="8"
+                      fill="none"
+                    />
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="40"
+                      stroke={`url(#gradient-${index})`}
+                      strokeWidth="8"
+                      fill="none"
+                      strokeDasharray={`${item.score * 2.51} 251`}
+                      strokeLinecap="round"
+                      className="drop-shadow-lg"
+                    />
+                    <defs>
+                      <linearGradient id={`gradient-${index}`} x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor={index === 0 ? "#10b981" : index === 1 ? "#3b82f6" : "#8b5cf6"} />
+                        <stop offset="100%" stopColor={index === 0 ? "#06b6d4" : index === 1 ? "#8b5cf6" : "#ec4899"} />
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-center">
+                      <div className={`text-3xl font-bold ${getScoreColor(item.score)}`}>
+                        {item.score}
+                      </div>
+                      <div className="text-sm text-gray-500 font-medium">/100</div>
+                    </div>
+                  </div>
+                </div>
+                <div className={`text-lg font-bold ${getScoreColor(item.score)} mb-2`}>
+                  {item.score >= 80 ? 'Excellent' : item.score >= 70 ? 'Good' : 'Needs Improvement'}
+                </div>
+                <div className="text-sm text-gray-600">
+                  {item.score >= 80 ? 'Outstanding performance!' : item.score >= 70 ? 'Above average results' : 'Room for growth'}
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+
+      {/* Confidence Metrics */}
+      <div className="mb-12">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-2">
+            🎯 Confidence Metrics
+          </h2>
+          <p className="text-gray-600">How confident and engaging was your presentation?</p>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <Card className="text-center bg-gradient-to-br from-blue-50 to-indigo-100 border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+            <CardHeader className="pb-4">
+              <CardTitle className="flex items-center justify-center space-x-3 text-blue-700">
+                <div className="p-3 bg-blue-500 rounded-2xl shadow-lg">
+                  <span className="text-3xl">🧍</span>
+                </div>
+                <span className="text-xl font-bold">Mostly Confident</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="bg-white/60 backdrop-blur-sm rounded-xl mx-4 mb-4 p-6">
+              <div className="text-5xl font-bold text-blue-600 mb-4">3.8<span className="text-2xl">/5</span></div>
+              <p className="text-blue-700 font-medium">Strong presence and composure</p>
+              <div className="mt-4 w-full bg-blue-200 rounded-full h-3">
+                <div className="bg-gradient-to-r from-blue-500 to-blue-600 h-3 rounded-full shadow-sm" style={{ width: '76%' }}></div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="text-center bg-gradient-to-br from-purple-50 to-pink-100 border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+            <CardHeader className="pb-4">
+              <CardTitle className="flex items-center justify-center space-x-3 text-purple-700">
+                <div className="p-3 bg-purple-500 rounded-2xl shadow-lg">
+                  <span className="text-3xl">👥</span>
+                </div>
+                <span className="text-xl font-bold">Low Engagement</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="bg-white/60 backdrop-blur-sm rounded-xl mx-4 mb-4 p-6">
+              <div className="text-5xl font-bold text-purple-600 mb-4">2.4<span className="text-2xl">/5</span></div>
+              <p className="text-purple-700 font-medium">Needs more audience interaction</p>
+              <div className="mt-4 w-full bg-purple-200 rounded-full h-3">
+                <div className="bg-gradient-to-r from-purple-500 to-purple-600 h-3 rounded-full shadow-sm" style={{ width: '48%' }}></div>
+              </div>
+            </CardContent>
+          </Card>
                     🎭 NICE SHOW!
                   </div>
                 </div>
