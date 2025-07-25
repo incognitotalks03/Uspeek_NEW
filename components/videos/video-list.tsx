@@ -1,10 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { VideoReport } from './video-report';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Eye, Download, Calendar, User } from 'lucide-react';
 
 interface Video {
@@ -68,7 +69,8 @@ interface VideoListProps {
 }
 
 export function VideoList({ filters }: VideoListProps) {
-  const router = useRouter();
+  const [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
+  const [isReportOpen, setIsReportOpen] = useState(false);
 
   const filteredVideos = mockVideos.filter(video => {
     const matchesSearch = video.speaker.toLowerCase().includes(filters.search.toLowerCase()) ||
@@ -87,7 +89,8 @@ export function VideoList({ filters }: VideoListProps) {
   };
 
   const handleViewReport = (video: Video) => {
-    router.push(`/videos/${video.id}/report`);
+    setSelectedVideo(video);
+    setIsReportOpen(true);
   };
 
   const handleDownloadVideo = (video: Video) => {
@@ -96,7 +99,7 @@ export function VideoList({ filters }: VideoListProps) {
   };
 
   return (
-    <>
+    <div>
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
         {filteredVideos.map((video) => (
           <Card key={video.id} className="hover:shadow-lg transition-shadow duration-200">
@@ -185,6 +188,25 @@ export function VideoList({ filters }: VideoListProps) {
           <div className="text-gray-500">No videos found matching your criteria.</div>
         </div>
       )}
-    </>
+
+      {/* Video Report Dialog */}
+      <Dialog open={isReportOpen} onOpenChange={setIsReportOpen}>
+        <DialogContent className="max-w-7xl max-h-[95vh] overflow-y-auto p-0">
+          <DialogHeader className="p-6 pb-0">
+            <DialogTitle className="text-2xl font-bold">
+              {selectedVideo?.title} - Analysis Report
+            </DialogTitle>
+          </DialogHeader>
+          {selectedVideo && (
+            <div className="p-6 pt-0">
+              <VideoReport 
+                video={selectedVideo} 
+                onClose={() => setIsReportOpen(false)} 
+              />
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 }

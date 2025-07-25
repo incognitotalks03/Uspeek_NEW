@@ -855,6 +855,17 @@ export function VideoReport({ video, onClose }: VideoReportProps) {
           </div>
         </CardContent>
       </Card>
+
+      {/* Close Button for Dialog Mode */}
+      <div className="flex justify-center mt-8">
+        <Button 
+          onClick={onClose}
+          variant="outline"
+          className="px-8 py-3 text-lg"
+        >
+          Close Report
+        </Button>
+      </div>
     </div>
   );
 }
