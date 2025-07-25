@@ -1,11 +1,22 @@
 'use client';
 
+import { notFound } from 'next/navigation';
 import { useParams } from 'next/navigation';
 import { DashboardLayout } from '@/components/layout/dashboard-layout';
 import { VideoReport } from '@/components/videos/video-report';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+
+// Generate static params for static export
+export function generateStaticParams() {
+  // Return the video IDs that should be pre-generated
+  return [
+    { id: '1' },
+    { id: '2' },
+    { id: '3' },
+  ];
+}
 
 // Mock video data - in a real app, you'd fetch this based on the ID
 const getVideoById = (id: string) => {
@@ -48,7 +59,11 @@ const getVideoById = (id: string) => {
     }
   };
 
-  return mockVideos[id as keyof typeof mockVideos] || mockVideos['1'];
+  const video = mockVideos[id as keyof typeof mockVideos];
+  if (!video) {
+    notFound();
+  }
+  return video;
 };
 
 export default function VideoReportPage() {
