@@ -75,12 +75,6 @@ const plans = [
   }
 ];
 
-const sidebarItems = [
-  { name: 'Preferences', active: false },
-  { name: 'Branch Settings', active: false },
-  { name: 'Subscriptions', active: true },
-  { name: 'Payments', active: false }
-];
 
 export default function SubscriptionsPage() {
   return (
