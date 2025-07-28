@@ -101,7 +101,7 @@ export function VideoReport({ video, onClose }: VideoReportProps) {
     if (score >= 80) return 'from-green-400 to-emerald-500';
     if (score >= 70) return 'from-yellow-400 to-orange-500';
     return 'from-red-400 to-rose-500';
-  };
+  }
 
   return (
     <div className="space-y-6">
