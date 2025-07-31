@@ -1238,6 +1238,126 @@ export function VideoReport({ video, onClose }: VideoReportProps) {
         </Card>
       </div>
 
+      {/* Grammar Corrected Section */}
+      <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 shadow-lg border border-green-100">
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-xl font-bold text-gray-900 flex items-center space-x-2">
+            <span className="text-2xl">📝</span>
+            <span>Grammar Corrected</span>
+          </h3>
+          <div className="text-sm text-gray-500">AI Generated</div>
+        </div>
+        
+        <div className="bg-white rounded-lg p-4 mb-4">
+          <div className="text-sm text-gray-600 mb-2">Text in red shows grammar corrections</div>
+        </div>
+        
+        <div className="bg-white rounded-lg p-6 space-y-4">
+          <p className="text-gray-800 leading-relaxed">
+            Good afternoon, everyone. I'd like to briefly introduce myself. My name is Vinny, and I'm originally from Delhi. I've worked for almost 18 years in various industries, 
+            primarily with high-end luxury <span className="bg-red-100 text-red-800 px-1 rounded">brands</span>. I've worked with Chanel, Ferragamo, and even a furniture brand called Febal, which you might be familiar with. More recently, I 
+            joined Santa Hansa. Santa Hansa <span className="bg-red-100 text-red-800 px-1 rounded">joined</span> me as a senior store manager. I'm looking after a Solapur metro station, Legacy store where we have a wide range of 
+            <span className="bg-red-100 text-red-800 px-1 rounded">bedspreads</span>, <span className="bg-red-100 text-red-800 px-1 rounded">cushions</span>, and luxury bed covers. I truly enjoy working at the store because I'm a very colorful person, and the store's vibrant palette appeals to me. My 
+            passion is sales. It's ingrained in me. I believe I can sell anything to anyone, thanks to the extensive exposure, experience, and training I've gained from working in 
+            <span className="bg-red-100 text-red-800 px-1 rounded">different industries</span>. Regarding my strengths and weaknesses, I'm a very quick learner. As for <span className="bg-red-100 text-red-800 px-1 rounded">weaknesses</span>, I wouldn't necessarily say I have any, as I consistently 
+            work hard to improve myself. However, that dedication could be perceived as a <span className="bg-red-100 text-red-800 px-1 rounded">weakness</span>. Finally, I love to travel. Whenever I have the opportunity, even if it's just for 
+            a day, I'll take a trip, traveling is definitely one of my hobbies.
+          </p>
+        </div>
+      </div>
+
+      {/* Keywords Section */}
+      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 shadow-lg border border-blue-100">
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-xl font-bold text-gray-900 flex items-center space-x-2">
+            <span className="text-2xl">🔑</span>
+            <span>Keywords</span>
+          </h3>
+        </div>
+        
+        <div className="flex flex-wrap gap-3">
+          <span className="bg-blue-100 text-blue-800 px-3 py-2 rounded-full text-sm font-medium shadow-sm hover:shadow-md transition-shadow">luxury brand</span>
+          <span className="bg-blue-100 text-blue-800 px-3 py-2 rounded-full text-sm font-medium shadow-sm hover:shadow-md transition-shadow">high-end furniture</span>
+          <span className="bg-blue-100 text-blue-800 px-3 py-2 rounded-full text-sm font-medium shadow-sm hover:shadow-md transition-shadow">Santa Hansa</span>
+          <span className="bg-blue-100 text-blue-800 px-3 py-2 rounded-full text-sm font-medium shadow-sm hover:shadow-md transition-shadow">store manager</span>
+          <span className="bg-blue-100 text-blue-800 px-3 py-2 rounded-full text-sm font-medium shadow-sm hover:shadow-md transition-shadow">Solapur metro station</span>
+          <span className="bg-blue-100 text-blue-800 px-3 py-2 rounded-full text-sm font-medium shadow-sm hover:shadow-md transition-shadow">bed covers</span>
+          <span className="bg-blue-100 text-blue-800 px-3 py-2 rounded-full text-sm font-medium shadow-sm hover:shadow-md transition-shadow">accessories</span>
+          <span className="bg-blue-100 text-blue-800 px-3 py-2 rounded-full text-sm font-medium shadow-sm hover:shadow-md transition-shadow">cushions</span>
+          <span className="bg-blue-100 text-blue-800 px-3 py-2 rounded-full text-sm font-medium shadow-sm hover:shadow-md transition-shadow">selling</span>
+          <span className="bg-blue-100 text-blue-800 px-3 py-2 rounded-full text-sm font-medium shadow-sm hover:shadow-md transition-shadow">quick learner</span>
+          <span className="bg-blue-100 text-blue-800 px-3 py-2 rounded-full text-sm font-medium shadow-sm hover:shadow-md transition-shadow">travel</span>
+          <span className="bg-blue-100 text-blue-800 px-3 py-2 rounded-full text-sm font-medium shadow-sm hover:shadow-md transition-shadow">Chanel</span>
+        </div>
+      </div>
+
+      {/* Summary Section */}
+      <div className="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-xl p-6 shadow-lg border border-purple-100">
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-xl font-bold text-gray-900 flex items-center space-x-2">
+            <span className="text-2xl">📋</span>
+            <span>Summary</span>
+          </h3>
+          <div className="text-sm text-gray-500">AI Generated</div>
+        </div>
+        
+        <div className="bg-white rounded-lg p-6 space-y-6">
+          {/* Personal Interests */}
+          <div>
+            <h4 className="font-semibold text-gray-900 mb-3 flex items-center space-x-2">
+              <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+              <span>Personal Interests</span>
+            </h4>
+            <ul className="space-y-2 text-gray-700">
+              <li className="flex items-start space-x-2">
+                <span className="text-blue-500 mt-1">•</span>
+                <span>Vinny loves to travel</span>
+              </li>
+              <li className="flex items-start space-x-2">
+                <span className="text-blue-500 mt-1">•</span>
+                <span>Takes trips whenever possible, even for just a day</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Critical Insights */}
+          <div>
+            <h4 className="font-semibold text-gray-900 mb-3 flex items-center space-x-2">
+              <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+              <span>Critical Insights</span>
+            </h4>
+            <ul className="space-y-2 text-gray-700">
+              <li className="flex items-start space-x-2">
+                <span className="text-green-500 mt-1">•</span>
+                <span>Vinny's extensive experience with high-end luxury brands positions him as a valuable asset in retail</span>
+              </li>
+              <li className="flex items-start space-x-2">
+                <span className="text-green-500 mt-1">•</span>
+                <span>His self-described dedication to improvement, while potentially perceived as a weakness, demonstrates a strong work ethic</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Implementation/Next Steps */}
+          <div>
+            <h4 className="font-semibold text-gray-900 mb-3 flex items-center space-x-2">
+              <span className="w-2 h-2 bg-orange-500 rounded-full"></span>
+              <span>Implementation/Next Steps</span>
+            </h4>
+            <ul className="space-y-2 text-gray-700">
+              <li className="flex items-start space-x-2">
+                <span className="text-orange-500 mt-1">•</span>
+                <span>Leverage Vinny's experience and passion for sales to drive store performance</span>
+              </li>
+              <li className="flex items-start space-x-2">
+                <span className="text-orange-500 mt-1">•</span>
+                <span>Encourage Vinny to share his insights and experiences with the team to foster a culture of continuous improvement</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
       {/* Overall Strength Progress */}
       <div className="space-y-8">
         <Card className="bg-gradient-to-br from-green-50 to-emerald-50 border-0 shadow-xl">
