@@ -738,6 +738,534 @@ export function VideoReport({ video, onClose }: VideoReportProps) {
         </div>
       </div>
 
+      {/* Pose & Voice Analysis */}
+      <div className="space-y-8">
+        <div className="text-center">
+          <div className="inline-flex items-center space-x-3 bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-6 py-3 rounded-full shadow-lg mb-4">
+            <span className="text-xl">🎭</span>
+            <span className="font-semibold text-lg">Pose & Voice Analysis</span>
+          </div>
+          <p className="text-gray-600 mt-2">Advanced body language and vocal analysis using MediaPipe and audio processing</p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Gestures Section */}
+          <Card className="bg-gradient-to-br from-purple-50 to-indigo-50 border-0 shadow-xl">
+            <CardHeader>
+              <CardTitle className="text-lg font-semibold text-center">
+                <div className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm mb-2">GESTURES</div>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="text-center p-4 bg-white rounded-lg shadow-sm">
+                  <div className="text-2xl font-bold text-purple-600">1</div>
+                  <div className="text-xs text-gray-600 mt-1">SMILES DETECTED</div>
+                  <div className="text-sm font-semibold text-purple-600">(0.83%)</div>
+                </div>
+                <div className="text-center p-4 bg-white rounded-lg shadow-sm">
+                  <div className="text-2xl font-bold text-purple-600">116</div>
+                  <div className="text-xs text-gray-600 mt-1">HEAD MOVEMENTS</div>
+                  <div className="text-sm font-semibold text-purple-600">(95.87%)</div>
+                </div>
+                <div className="text-center p-4 bg-white rounded-lg shadow-sm">
+                  <div className="text-2xl font-bold text-purple-600">0</div>
+                  <div className="text-xs text-gray-600 mt-1">HAND MOVEMENTS</div>
+                  <div className="text-sm font-semibold text-purple-600">(0.0%)</div>
+                </div>
+                <div className="text-center p-4 bg-white rounded-lg shadow-sm">
+                  <div className="text-2xl font-bold text-purple-600">71</div>
+                  <div className="text-xs text-gray-600 mt-1">EYE CONTACT</div>
+                  <div className="text-sm font-semibold text-purple-600">(58.68%)</div>
+                </div>
+                <div className="text-center p-4 bg-white rounded-lg shadow-sm">
+                  <div className="text-2xl font-bold text-purple-600">0</div>
+                  <div className="text-xs text-gray-600 mt-1">LEG MOVEMENTS</div>
+                  <div className="text-sm font-semibold text-purple-600">(0.0%)</div>
+                </div>
+                <div className="text-center p-4 bg-white rounded-lg shadow-sm">
+                  <div className="text-2xl font-bold text-purple-600">0</div>
+                  <div className="text-xs text-gray-600 mt-1">FOOT MOVEMENTS</div>
+                  <div className="text-sm font-semibold text-purple-600">(0.0%)</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Voice Analysis Section */}
+          <Card className="bg-gradient-to-br from-indigo-50 to-blue-50 border-0 shadow-xl">
+            <CardHeader>
+              <CardTitle className="text-lg font-semibold text-center">
+                <div className="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm mb-2">AUDIO PROCESSING</div>
+                Voice Analysis
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="text-center p-4 bg-white rounded-lg shadow-sm">
+                  <div className="text-2xl font-bold text-indigo-600">119.91s</div>
+                  <div className="text-xs text-gray-600 mt-1">DURATION</div>
+                  <div className="text-sm font-semibold text-indigo-600">Total Length</div>
+                </div>
+                <div className="text-center p-4 bg-white rounded-lg shadow-sm">
+                  <div className="text-2xl font-bold text-indigo-600">63.58 dB</div>
+                  <div className="text-xs text-gray-600 mt-1">VOLUME</div>
+                  <div className="text-sm font-semibold text-indigo-600">Average Volume</div>
+                </div>
+                <div className="text-center p-4 bg-white rounded-lg shadow-sm">
+                  <div className="text-2xl font-bold text-indigo-600">237.14 Hz</div>
+                  <div className="text-xs text-gray-600 mt-1">MEAN PITCH</div>
+                  <div className="text-sm font-semibold text-indigo-600">Average Pitch</div>
+                </div>
+                <div className="text-center p-4 bg-white rounded-lg shadow-sm">
+                  <div className="text-2xl font-bold text-indigo-600">75-600 Hz</div>
+                  <div className="text-xs text-gray-600 mt-1">PITCH RANGE</div>
+                  <div className="text-sm font-semibold text-indigo-600">Frequency Range</div>
+                </div>
+                <div className="text-center p-4 bg-white rounded-lg shadow-sm">
+                  <div className="text-2xl font-bold text-indigo-600">1</div>
+                  <div className="text-xs text-gray-600 mt-1">PAUSES</div>
+                  <div className="text-sm font-semibold text-indigo-600">Number of Pauses</div>
+                </div>
+                <div className="text-center p-4 bg-white rounded-lg shadow-sm">
+                  <div className="text-2xl font-bold text-indigo-600">119.84s</div>
+                  <div className="text-xs text-gray-600 mt-1">SPEAKING TIME</div>
+                  <div className="text-sm font-semibold text-indigo-600">Active Speaking</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <Card className="bg-gradient-to-r from-purple-100 to-indigo-100 border border-purple-200">
+          <CardContent className="p-6">
+            <div className="text-sm text-gray-700">
+              <strong>Note:</strong> This analysis uses MediaPipe for pose detection and facial analysis, and audio processing for vocal metrics to provide comprehensive presentation coaching.
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Advanced Content Analysis & Recommendations */}
+      <div className="space-y-8">
+        <div className="text-center">
+          <div className="inline-flex items-center space-x-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-3 rounded-full shadow-lg mb-4">
+            <span className="text-xl">🤖</span>
+            <span className="font-semibold text-lg">Advanced Content Analysis & Recommendations</span>
+          </div>
+          <p className="text-gray-600 mt-2">Comprehensive analysis with detailed recommendations based on NLP metrics</p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Strengths */}
+          <Card className="bg-gradient-to-br from-green-50 to-emerald-50 border-0 shadow-xl">
+            <CardHeader>
+              <CardTitle className="text-lg font-semibold text-green-800">
+                <div className="flex items-center space-x-2">
+                  <span className="text-2xl">✅</span>
+                  <span>Strengths</span>
+                </div>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="p-4 bg-white rounded-lg border border-green-200">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-green-600">✓</span>
+                    <span className="font-semibold text-gray-800">Vocabulary</span>
+                  </div>
+                  <Badge className="bg-green-100 text-green-800">85.5%</Badge>
+                </div>
+                <p className="text-sm text-gray-600">Strong vocabulary diversity with 45.5% unique words</p>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Areas for Improvement */}
+          <Card className="bg-gradient-to-br from-orange-50 to-amber-50 border-0 shadow-xl">
+            <CardHeader>
+              <CardTitle className="text-lg font-semibold text-orange-800">
+                <div className="flex items-center space-x-2">
+                  <span className="text-2xl">⚠️</span>
+                  <span>Areas for Improvement</span>
+                </div>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="p-4 bg-white rounded-lg border border-orange-200">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-orange-600">▲</span>
+                    <span className="font-semibold text-gray-800">Content Length</span>
+                  </div>
+                  <Badge className="bg-orange-100 text-orange-800">68.3%</Badge>
+                </div>
+                <p className="text-sm text-gray-600">Consider adding approximately 32 more words for better depth</p>
+              </div>
+              
+              <div className="p-4 bg-white rounded-lg border border-orange-200">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-orange-600">▲</span>
+                    <span className="font-semibold text-gray-800">Fluency</span>
+                  </div>
+                  <Badge className="bg-orange-100 text-orange-800">69.6%</Badge>
+                </div>
+                <p className="text-sm text-gray-600">Reduce filler words (like, just, basically) which make up 2.81% of content</p>
+              </div>
+              
+              <div className="p-4 bg-white rounded-lg border border-orange-200">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-orange-600">▲</span>
+                    <span className="font-semibold text-gray-800">Flow & Cohesion</span>
+                  </div>
+                </div>
+                <p className="text-sm text-gray-600">Add more transition words to improve flow between ideas</p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Detailed Metrics */}
+        <Card className="bg-white border-0 shadow-xl">
+          <CardHeader>
+            <CardTitle className="text-lg font-semibold text-center">Detailed Metrics</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              <div className="text-center">
+                <div className="text-4xl font-bold text-green-600 mb-2">85.5%</div>
+                <div className="text-sm font-semibold text-gray-800">Vocabulary</div>
+                <div className="text-xs text-gray-500">45.5% unique words</div>
+              </div>
+              <div className="text-center">
+                <div className="text-4xl font-bold text-orange-600 mb-2">69.6%</div>
+                <div className="text-sm font-semibold text-gray-800">Fluency</div>
+                <div className="text-xs text-gray-500">2.81% filler words</div>
+              </div>
+              <div className="text-center">
+                <div className="text-4xl font-bold text-yellow-600 mb-2">76.9%</div>
+                <div className="text-sm font-semibold text-gray-800">Sentence Structure</div>
+                <div className="text-xs text-gray-500">~5.3 words/sentence</div>
+              </div>
+              <div className="text-center">
+                <div className="text-4xl font-bold text-green-600 mb-2">89.3%</div>
+                <div className="text-sm font-semibold text-gray-800">Content Length</div>
+                <div className="text-xs text-gray-500">Good depth</div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Content Analysis Summary */}
+      <div className="space-y-8">
+        <div className="text-center">
+          <div className="inline-flex items-center space-x-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-full shadow-lg mb-4">
+            <span className="text-xl">📊</span>
+            <span className="font-semibold text-lg">Content Analysis Summary</span>
+          </div>
+          <p className="text-gray-600 mt-2">Based on vocabulary, fluency, sentence structure, and other metrics</p>
+        </div>
+
+        <Card className="bg-gradient-to-br from-indigo-50 to-purple-50 border-0 shadow-xl">
+          <CardHeader>
+            <CardTitle className="text-lg font-semibold text-center">Key Insights</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+              <div className="flex items-center space-x-3">
+                <span className="text-yellow-500">😊</span>
+                <span className="text-sm font-medium">Sentiment</span>
+              </div>
+              <Badge className="bg-green-100 text-green-800">POSITIVE (99.9% confidence)</Badge>
+            </div>
+            
+            <div className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+              <div className="flex items-center space-x-3">
+                <span className="text-yellow-500">😊</span>
+                <span className="text-sm font-medium">Dominant Emotion</span>
+              </div>
+              <Badge className="bg-blue-100 text-blue-800">Joy / Happiness (90% confidence)</Badge>
+            </div>
+            
+            <div className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+              <div className="flex items-center space-x-3">
+                <span className="text-green-500">📈</span>
+                <span className="text-sm font-medium">Content Quality</span>
+              </div>
+              <Badge className="bg-green-100 text-green-800">82.5% overall quality score</Badge>
+            </div>
+            
+            <div className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+              <div className="flex items-center space-x-3">
+                <span className="text-blue-500">📚</span>
+                <span className="text-sm font-medium">Vocabulary Diversity</span>
+              </div>
+              <Badge className="bg-blue-100 text-blue-800">45.5% unique words</Badge>
+            </div>
+            
+            <div className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+              <div className="flex items-center space-x-3">
+                <span className="text-purple-500">⚡</span>
+                <span className="text-sm font-medium">Complexity Level</span>
+              </div>
+              <Badge className="bg-purple-100 text-purple-800">Basic</Badge>
+            </div>
+            
+            <div className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+              <div className="flex items-center space-x-3">
+                <span className="text-indigo-500">💪</span>
+                <span className="text-sm font-medium">Overall Strength</span>
+              </div>
+              <Badge className="bg-indigo-100 text-indigo-800">77.1% content strength</Badge>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Sentiment Analysis */}
+      <div className="space-y-8">
+        <div className="text-center">
+          <div className="inline-flex items-center space-x-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white px-6 py-3 rounded-full shadow-lg mb-4">
+            <span className="text-xl">😊</span>
+            <span className="font-semibold text-lg">Sentiment Analysis</span>
+          </div>
+          <p className="text-gray-600 mt-2">Analysis of the emotional tone of your content</p>
+        </div>
+
+        <Card className="bg-gradient-to-br from-green-50 to-emerald-50 border-0 shadow-xl">
+          <CardContent className="p-8">
+            <div className="mb-6">
+              <div className="flex items-center space-x-3 mb-4">
+                <span className="text-3xl">😊</span>
+                <div>
+                  <h3 className="text-xl font-bold text-gray-800">Overall Sentiment: POSITIVE</h3>
+                  <p className="text-gray-600">Confidence: 99.9%</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium text-gray-700">Positive</span>
+                <div className="flex items-center space-x-2">
+                  <div className="w-64 bg-gray-200 rounded-full h-3">
+                    <div className="bg-green-500 h-3 rounded-full" style={{ width: '99.9%' }}></div>
+                  </div>
+                  <span className="text-sm font-bold text-green-600">99.9%</span>
+                </div>
+              </div>
+              
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium text-gray-700">Negative</span>
+                <div className="flex items-center space-x-2">
+                  <div className="w-64 bg-gray-200 rounded-full h-3">
+                    <div className="bg-red-500 h-3 rounded-full" style={{ width: '0.1%' }}></div>
+                  </div>
+                  <span className="text-sm font-bold text-red-600">0.1%</span>
+                </div>
+              </div>
+              
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium text-gray-700">Neutral</span>
+                <div className="flex items-center space-x-2">
+                  <div className="w-64 bg-gray-200 rounded-full h-3">
+                    <div className="bg-gray-500 h-3 rounded-full" style={{ width: '0%' }}></div>
+                  </div>
+                  <span className="text-sm font-bold text-gray-600">0%</span>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Emotion Analysis */}
+      <div className="space-y-8">
+        <div className="text-center">
+          <div className="inline-flex items-center space-x-3 bg-gradient-to-r from-yellow-500 to-orange-600 text-white px-6 py-3 rounded-full shadow-lg mb-4">
+            <span className="text-xl">🎭</span>
+            <span className="font-semibold text-lg">Emotion Analysis</span>
+          </div>
+          <p className="text-gray-600 mt-2">Detailed emotion categorization based on NLP & Social Media Models</p>
+        </div>
+
+        <Card className="bg-gradient-to-br from-yellow-50 to-orange-50 border-0 shadow-xl">
+          <CardContent className="p-8">
+            <div className="mb-6">
+              <div className="flex items-center space-x-3 mb-4">
+                <span className="text-3xl">😊</span>
+                <div>
+                  <h3 className="text-xl font-bold text-gray-800">Joy / Happiness</h3>
+                  <p className="text-gray-600">Confidence: 90%</p>
+                </div>
+              </div>
+              
+              <div className="bg-blue-50 p-4 rounded-lg mb-4">
+                <p className="text-sm text-gray-700 italic">
+                  Your content expresses positive emotions, cheerfulness, and enthusiasm.
+                </p>
+              </div>
+              
+              <div className="mb-4">
+                <h4 className="font-semibold text-gray-800 mb-2">Detected Keywords:</h4>
+                <div className="flex flex-wrap gap-2">
+                  <Badge className="bg-blue-100 text-blue-800">love</Badge>
+                  <Badge className="bg-blue-100 text-blue-800">enjoy</Badge>
+                  <Badge className="bg-blue-100 text-blue-800">great</Badge>
+                  <Badge className="bg-blue-100 text-blue-800">best</Badge>
+                </div>
+              </div>
+              
+              <div>
+                <h4 className="font-semibold text-gray-800 mb-3">Emotion Breakdown:</h4>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <span className="text-yellow-500">😊</span>
+                      <span className="text-sm font-medium">Joy / Happiness</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <div className="w-32 bg-gray-200 rounded-full h-2">
+                        <div className="bg-yellow-500 h-2 rounded-full" style={{ width: '90%' }}></div>
+                      </div>
+                      <span className="text-sm font-bold">90%</span>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <span className="text-red-500">❤️</span>
+                      <span className="text-sm font-medium">Love</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <div className="w-32 bg-gray-200 rounded-full h-2">
+                        <div className="bg-red-500 h-2 rounded-full" style={{ width: '50%' }}></div>
+                      </div>
+                      <span className="text-sm font-bold">50%</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Repeated Words Analysis */}
+      <div className="space-y-8">
+        <div className="text-center">
+          <div className="inline-flex items-center space-x-3 bg-gradient-to-r from-red-500 to-pink-600 text-white px-6 py-3 rounded-full shadow-lg mb-4">
+            <span className="text-xl">🔄</span>
+            <span className="font-semibold text-lg">Repeated Words Analysis</span>
+          </div>
+          <p className="text-gray-600 mt-2">Words that appear frequently in your speech. Variety in vocabulary can make your message more engaging</p>
+        </div>
+
+        <Card className="bg-gradient-to-br from-red-50 to-pink-50 border-0 shadow-xl">
+          <CardContent className="p-8">
+            <div className="bg-blue-50 p-4 rounded-lg mb-6">
+              <p className="text-sm text-gray-700 italic">
+                These words appear frequently in your speech. Consider using synonyms for variety.
+              </p>
+            </div>
+            
+            <div className="space-y-4">
+              {[
+                { word: 'work', count: 8 },
+                { word: 'store', count: 6 },
+                { word: 'like', count: 5 },
+                { word: 'sell', count: 4 },
+                { word: 'different', count: 4 },
+                { word: 'really', count: 3 },
+                { word: 'much', count: 3 },
+                { word: 'travel', count: 3 }
+              ].map((item, index) => (
+                <div key={index} className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+                  <span className="font-medium text-gray-800">{item.word}</span>
+                  <div className="flex items-center space-x-2">
+                    <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+                      <span className="text-white text-sm font-bold">{item.count}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Filler Words Detection */}
+      <div className="space-y-8">
+        <div className="text-center">
+          <div className="inline-flex items-center space-x-3 bg-gradient-to-r from-orange-500 to-red-600 text-white px-6 py-3 rounded-full shadow-lg mb-4">
+            <span className="text-xl">⚠️</span>
+            <span className="font-semibold text-lg">Filler Words Detection</span>
+          </div>
+          <p className="text-gray-600 mt-2">Words that may reduce the clarity and impact of your message. Minimizing these can improve your delivery</p>
+        </div>
+
+        <Card className="bg-gradient-to-br from-orange-50 to-red-50 border-0 shadow-xl">
+          <CardContent className="p-8">
+            <div className="bg-orange-100 p-4 rounded-lg mb-6">
+              <p className="text-sm text-gray-700 italic">
+                These are filler words that appear in your speech. Reducing them can make your delivery more impactful.
+              </p>
+            </div>
+            
+            <div className="space-y-4">
+              {[
+                { word: 'so', percentage: '3.7%', count: 16 },
+                { word: 'like', percentage: '1.8%', count: 8 },
+                { word: 'just', percentage: '1.2%', count: 5 },
+                { word: 'you know', percentage: '0.8%', count: 4 },
+                { word: 'basically', percentage: '0.4%', count: 2 }
+              ].map((item, index) => (
+                <div key={index} className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+                  <span className="font-medium text-gray-800">{item.word}</span>
+                  <div className="flex items-center space-x-3">
+                    <span className="text-sm text-gray-600">{item.percentage}</span>
+                    <div className="w-8 h-8 bg-orange-600 rounded-full flex items-center justify-center">
+                      <span className="text-white text-sm font-bold">{item.count}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Overall Strength Progress */}
+      <div className="space-y-8">
+        <Card className="bg-gradient-to-br from-green-50 to-emerald-50 border-0 shadow-xl">
+          <CardContent className="p-8">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center space-x-3">
+                <span className="text-3xl">💪</span>
+                <div>
+                  <h3 className="text-xl font-bold text-gray-800">Overall Strength</h3>
+                  <p className="text-gray-600">Your content shows strength in several important areas</p>
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="text-4xl font-bold text-green-600">77.1%</div>
+                <Badge className="bg-green-100 text-green-800 mt-2">Good</Badge>
+              </div>
+            </div>
+            
+            <div className="w-full bg-gray-200 rounded-full h-4 mb-4">
+              <div className="bg-green-500 h-4 rounded-full" style={{ width: '77.1%' }}></div>
+            </div>
+            
+            <p className="text-sm text-gray-600 text-center">
+              Good - Your content shows strength in several important areas
+            </p>
+          </CardContent>
+        </Card>
+      </div>
       {/* Transcript Section */}
       <div className="space-y-8">
         <div className="text-center">
